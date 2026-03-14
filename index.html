@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Violão Popular Jazz — Instituto Urbano Rocha</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C; --gold-light:#E8C97A; --gold-dark:#8B6914;
+  --silver:#9EAAB8; --silver-light:#C8D4DE; --silver-dark:#5A6A7A;
+  --copper:#C47A3A; --copper-light:#E09A5A; --copper-dark:#8A4A1A;
+  --black:#0A0A0A; --dark:#111111; --card:#161616; --card2:#1C1C1C;
+  --border:#2A2A2A; --text:#E8E0D0; --text-dim:#8A8070; --red:#B84444;
+  --green:#4CAF6A;
+  /* level accent (overridden per level) */
+  --lvl:#C9A84C; --lvl-light:#E8C97A; --lvl-dark:#8B6914;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Mono',monospace;background:var(--black);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.4;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--dark);}::-webkit-scrollbar-thumb{background:var(--gold-dark);}
+
+/* ===== LOGIN ===== */
+#login-screen{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:1000;transition:opacity .8s ease,transform .8s ease;}
+#login-screen.hidden{opacity:0;transform:translateY(-30px);pointer-events:none;}
+.login-wrapper{display:grid;grid-template-columns:1fr 1fr;width:min(920px,96vw);min-height:560px;border:1px solid var(--border);overflow:hidden;}
+.login-art{background:var(--card);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:40px;}
+.login-art::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(201,168,76,.15) 0%,transparent 70%);}
+.login-art-circles{position:absolute;inset:0;}
+.login-art-circles .c{position:absolute;border:1px solid rgba(201,168,76,.12);border-radius:50%;animation:rotate-slow linear infinite;}
+.c1{width:320px;height:320px;top:50%;left:50%;transform:translate(-50%,-50%);animation-duration:30s;}
+.c2{width:230px;height:230px;top:50%;left:50%;transform:translate(-50%,-50%);animation-duration:20s;animation-direction:reverse;border-color:rgba(201,168,76,.07);}
+.c3{width:140px;height:140px;top:50%;left:50%;transform:translate(-50%,-50%);animation-duration:12s;}
+@keyframes rotate-slow{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+.login-art-content{position:relative;text-align:center;}
+.login-guitar-icon{font-size:64px;line-height:1;filter:drop-shadow(0 0 20px rgba(201,168,76,.4));animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.login-art-title{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:3px;color:var(--gold);line-height:1;margin-top:16px;}
+.login-art-sub{font-size:10px;color:var(--text-dim);letter-spacing:4px;text-transform:uppercase;margin-top:8px;}
+.login-form-side{background:var(--dark);padding:52px 44px;display:flex;flex-direction:column;justify-content:center;position:relative;}
+.login-form-side::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-dark));}
+.login-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim);margin-bottom:28px;}
+.login-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.login-sub{font-size:12px;color:var(--text-dim);margin-bottom:28px;line-height:1.6;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.form-group input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:13px 16px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text);outline:none;transition:border-color .3s,background .3s;}
+.form-group input:focus{border-color:var(--gold);background:rgba(201,168,76,.05);}
+.login-hint{font-size:10px;color:var(--text-dim);margin-top:6px;opacity:.6;line-height:1.5;}
+.btn-login{width:100%;background:var(--gold);color:var(--black);border:none;padding:16px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;cursor:pointer;margin-top:8px;transition:background .3s,transform .2s;position:relative;overflow:hidden;}
+.btn-login::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%,rgba(255,255,255,.15) 50%,transparent 100%);transform:translateX(-100%);transition:transform .5s;}
+.btn-login:hover::before{transform:translateX(100%);}
+.btn-login:hover{background:var(--gold-light);}
+.btn-login:active{transform:scale(.98);}
+.login-error{color:var(--red);font-size:11px;margin-top:10px;display:none;letter-spacing:1px;}
+
+/* ===== APP ===== */
+#app{display:none;min-height:100vh;}
+#app.visible{display:block;}
+
+/* ===== HEADER ===== */
+.header{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:66px;}
+.header-brand{display:flex;align-items:center;gap:14px;cursor:pointer;}
+.brand-mark{width:40px;height:40px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--black);clip-path:polygon(10% 0%,90% 0%,100% 10%,100% 90%,90% 100%,10% 100%,0% 90%,0% 10%);}
+.brand-name{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;color:var(--gold);}
+.brand-course{font-size:9px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;}
+.header-center{display:flex;align-items:center;gap:0;}
+.nav-tab{padding:8px 14px;background:none;border:none;color:var(--text-dim);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;transition:color .2s,background .2s;position:relative;text-transform:uppercase;}
+.nav-tab::after{content:'';position:absolute;bottom:0;left:14px;right:14px;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .3s;}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--gold);}
+.nav-tab.active::after{transform:scaleX(1);}
+.header-right{display:flex;align-items:center;gap:12px;}
+.user-badge{font-size:10px;color:var(--text-dim);letter-spacing:1px;}
+.user-badge span{color:var(--gold);}
+.btn-logout{padding:7px 12px;background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+
+/* LEVEL SWITCHER */
+.level-switcher{display:flex;gap:0;border:1px solid var(--border);overflow:hidden;}
+.lvl-btn{padding:7px 14px;background:none;border:none;border-right:1px solid var(--border);color:var(--text-dim);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;cursor:pointer;transition:all .25s;white-space:nowrap;}
+.lvl-btn:last-child{border-right:none;}
+.lvl-btn.active-basic{background:rgba(201,168,76,.12);color:var(--gold);}
+.lvl-btn.active-inter{background:rgba(158,170,184,.12);color:var(--silver-light);}
+.lvl-btn.active-adv{background:rgba(196,122,58,.12);color:var(--copper-light);}
+.lvl-btn:hover{background:rgba(255,255,255,.05);color:var(--text);}
+
+/* ===== SECTIONS ===== */
+.section{display:none;animation:fadeIn .5s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* ===== LEVEL PANELS ===== */
+.level-panel{display:none;}
+.level-panel.active{display:block;}
+
+/* ===== HERO ===== */
+.hero{min-height:540px;background:var(--dark);position:relative;overflow:hidden;display:flex;align-items:center;padding:80px;}
+.hero-bg{position:absolute;inset:0;}
+.hero-lines{position:absolute;inset:0;overflow:hidden;opacity:.05;}
+.hero-lines::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(201,168,76,.5) 40px,rgba(201,168,76,.5) 41px);}
+.hero-content{position:relative;max-width:600px;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;border:1px solid;padding:6px 14px;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;}
+.hero-tag::before{content:'●';font-size:6px;animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,60px);font-weight:900;line-height:1.1;color:var(--text);margin-bottom:16px;}
+.hero-title em{font-style:italic;}
+.hero-sub{font-size:13px;color:var(--text-dim);line-height:1.8;margin-bottom:36px;max-width:480px;}
+.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.btn-primary{padding:14px 28px;border:none;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.btn-secondary{padding:14px 28px;background:none;border:1px solid;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;cursor:pointer;text-decoration:none;transition:all .3s;}
+.hero-stats{position:absolute;right:80px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:20px;}
+.stat-item{text-align:center;padding:18px 22px;border:1px solid var(--border);background:rgba(22,22,22,.8);backdrop-filter:blur(8px);position:relative;}
+.stat-item::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;}
+.stat-label{font-size:9px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+
+/* ===== CONTENT AREA ===== */
+.content-area{max-width:1200px;margin:0 auto;padding:56px 40px;}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;padding-bottom:18px;border-bottom:1px solid var(--border);}
+.section-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px;}
+.section-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--text);}
+.section-meta{font-size:11px;color:var(--text-dim);text-align:right;}
+
+/* ===== PHASE CARDS ===== */
+.phase-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px;}
+.phase-card{background:var(--card);border:1px solid var(--border);overflow:hidden;transition:border-color .3s,transform .3s;cursor:pointer;position:relative;}
+.phase-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.phase-card:hover{transform:translateY(-4px);}
+.phase-card:hover::after{transform:scaleX(1);}
+.phase-header{padding:24px 26px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+.phase-num{width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;flex-shrink:0;}
+.phase-info h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.phase-info p{font-size:10px;color:var(--text-dim);letter-spacing:1px;}
+.phase-body{padding:20px 26px;}
+.phase-tag-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.tag{padding:3px 9px;font-size:9px;letter-spacing:1px;text-transform:uppercase;}
+.tag.br{background:rgba(0,120,50,.08);border:1px solid rgba(0,180,80,.2);color:var(--green);}
+.content-list{list-style:none;}
+.content-list li{padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;color:var(--text-dim);display:flex;justify-content:space-between;align-items:flex-start;gap:10px;line-height:1.4;}
+.content-list li:last-child{border-bottom:none;}
+.content-list li strong{color:var(--text);font-weight:500;}
+.author-tag{font-size:9px;color:var(--text-dim);white-space:nowrap;padding:2px 6px;border:1px solid var(--border);flex-shrink:0;}
+.author-tag.br{color:var(--green);border-color:rgba(0,180,80,.2);}
+
+/* ===== REP CARDS ===== */
+.repertoire-tabs{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.rep-tab{padding:10px 20px;background:none;border:none;color:var(--text-dim);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .3s;}
+.rep-tab.active{border-bottom-color:currentColor;}
+.rep-tab:hover{color:var(--text);}
+.repertoire-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+.rep-card{background:var(--card);border:1px solid var(--border);padding:18px 20px;transition:all .3s;position:relative;overflow:hidden;}
+.rep-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;opacity:.5;}
+.rep-card.brazil::before{background:var(--green);opacity:.6;}
+.rep-card:hover{border-color:rgba(201,168,76,.25);transform:translateX(4px);}
+.rep-title{font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--text);margin-bottom:5px;}
+.rep-author{font-size:11px;margin-bottom:7px;}
+.rep-author.br{color:var(--green);}
+.rep-details{font-size:10px;color:var(--text-dim);line-height:1.6;}
+.br-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(0,120,50,.1);border:1px solid rgba(0,180,80,.2);color:var(--green);font-size:9px;letter-spacing:2px;padding:2px 8px;margin-top:8px;}
+
+/* ===== TECHNIQUES ===== */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;}
+.tech-card{background:var(--card);border:1px solid var(--border);padding:26px;transition:all .3s;}
+.tech-card:hover{border-color:rgba(201,168,76,.25);}
+.tech-icon{font-size:30px;margin-bottom:14px;}
+.tech-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:9px;}
+.tech-desc{font-size:11px;color:var(--text-dim);line-height:1.7;margin-bottom:14px;}
+.progress-bar{height:2px;background:var(--border);position:relative;overflow:hidden;}
+.progress-fill{position:absolute;left:0;top:0;height:100%;transition:width 1s ease;}
+.progress-label{display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-bottom:6px;letter-spacing:1px;}
+
+/* ===== HARMONY ===== */
+.harmony-block{background:var(--card);border:1px solid var(--border);overflow:hidden;margin-bottom:20px;}
+.harmony-header{padding:14px 22px;background:rgba(201,168,76,.04);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.harmony-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--text);}
+.harmony-level{font-size:9px;letter-spacing:2px;text-transform:uppercase;}
+.harmony-body{padding:18px 22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;}
+.chord-item{padding:10px 12px;background:rgba(255,255,255,.02);border:1px solid var(--border);}
+.chord-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;}
+.chord-desc{font-size:10px;color:var(--text-dim);margin-top:2px;}
+
+/* ===== INFO BANNER ===== */
+.info-banner{border:1px solid;padding:26px 34px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:44px;}
+.info-banner-text h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--text);margin-bottom:5px;}
+.info-banner-text p{font-size:11px;color:var(--text-dim);line-height:1.6;}
+.btn-info{padding:13px 26px;border:none;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:3px;cursor:pointer;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;transition:all .3s;flex-shrink:0;}
+.btn-info:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3);}
+
+/* ===== ABOUT ===== */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+.about-text h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--text);margin-bottom:14px;line-height:1.3;}
+.about-text p{font-size:12px;color:var(--text-dim);line-height:1.9;margin-bottom:12px;}
+.about-highlight{border-left:3px solid;padding:14px 18px;margin:20px 0;font-size:13px;color:var(--text);font-style:italic;font-family:'Playfair Display',serif;line-height:1.6;}
+.about-features{display:flex;flex-direction:column;gap:14px;}
+.feature-item{padding:18px 20px;background:var(--card);border:1px solid var(--border);display:flex;gap:14px;align-items:flex-start;transition:border-color .3s;}
+.feature-item:hover{border-color:rgba(201,168,76,.25);}
+.feature-icon{font-size:22px;flex-shrink:0;}
+.feature-text h4{font-size:13px;color:var(--text);margin-bottom:4px;font-weight:500;}
+.feature-text p{font-size:11px;color:var(--text-dim);line-height:1.6;}
+
+/* ===== AUTHORS GRID ===== */
+.authors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+.author-card{background:var(--card);border:1px solid var(--border);overflow:hidden;}
+.author-card-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.author-card-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--text);}
+.author-card-type{font-size:9px;letter-spacing:2px;text-transform:uppercase;}
+.author-card-body{padding:14px 18px;font-size:11px;color:var(--text-dim);line-height:1.7;}
+
+/* ===== CHORD PROG ===== */
+.prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.prog-item{background:var(--card);border:1px solid var(--border);padding:20px 22px;}
+.prog-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.prog-formula{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--text);background:rgba(255,255,255,.02);border:1px solid var(--border);padding:12px 16px;margin-bottom:10px;line-height:1.4;}
+.prog-desc{font-size:10px;color:var(--text-dim);line-height:1.6;}
+
+/* ===== DIVIDER ===== */
+.divider{height:1px;background:var(--border);margin:36px 0;}
+.br-legend{display:inline-flex;align-items:center;gap:6px;background:rgba(0,120,50,.08);border:1px solid rgba(0,180,80,.2);padding:4px 10px;font-size:9px;color:var(--green);letter-spacing:2px;}
+
+/* ===== LEVEL BADGE ===== */
+.level-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;font-size:9px;letter-spacing:3px;text-transform:uppercase;font-family:'Bebas Neue',sans-serif;font-size:14px;}
+
+/* ===== FOOTER ===== */
+.footer{background:var(--dark);border-top:1px solid var(--border);padding:36px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;}
+.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;color:var(--gold);}
+.footer-text{font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-top:3px;}
+.footer-link{color:var(--gold);text-decoration:none;font-size:11px;letter-spacing:1px;transition:color .2s;}
+.footer-link:hover{color:var(--gold-light);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .login-wrapper{grid-template-columns:1fr;}
+  .login-art{display:none;}
+  .header{padding:12px 16px;height:auto;flex-wrap:wrap;gap:8px;}
+  .header-center{display:none;}
+  .hero{padding:40px 20px 200px;}
+  .hero-stats{position:static;transform:none;flex-direction:row;justify-content:center;flex-wrap:wrap;margin-top:32px;}
+  .content-area{padding:36px 16px;}
+  .about-grid,.prog-grid{grid-template-columns:1fr;}
+  .info-banner{flex-direction:column;text-align:center;}
+  .footer{flex-direction:column;text-align:center;}
+  .section-header{flex-direction:column;align-items:flex-start;gap:10px;}
+  .level-switcher{flex-wrap:wrap;}
+}
+.mobile-nav{display:none;padding:10px 16px;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--dark);}
+@media(max-width:900px){.mobile-nav{display:flex;}}
+
+/* ==================== LEVEL COLOR THEMES ==================== */
+/* BASIC = gold */
+.basic .hero-tag{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.3);color:var(--gold);}
+.basic .hero-title em{color:var(--gold);}
+.basic .hero-bg{background:radial-gradient(ellipse at 80% 50%,rgba(201,168,76,.08) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(201,168,76,.05) 0%,transparent 50%);}
+.basic .btn-primary{background:var(--gold);color:var(--black);}
+.basic .btn-primary:hover{background:var(--gold-light);box-shadow:0 8px 24px rgba(201,168,76,.3);}
+.basic .btn-secondary{color:var(--gold);border-color:var(--gold);}
+.basic .btn-secondary:hover{background:rgba(201,168,76,.08);}
+.basic .stat-item::before{background:var(--gold);}
+.basic .stat-num{color:var(--gold);}
+.basic .section-eyebrow{color:var(--gold);}
+.basic .phase-num{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:var(--gold);}
+.basic .phase-card:hover{border-color:rgba(201,168,76,.4);}
+.basic .phase-card::after{background:linear-gradient(90deg,var(--gold-dark),var(--gold));}
+.basic .tag{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);color:var(--gold);}
+.basic .rep-card::before{background:var(--gold);}
+.basic .rep-author{color:var(--gold);}
+.basic .rep-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.basic .harmony-level{color:var(--gold);}
+.basic .chord-name{color:var(--gold);}
+.basic .prog-label{color:var(--gold);}
+.basic .about-highlight{border-color:var(--gold);background:rgba(201,168,76,.04);}
+.basic .author-card-type{color:var(--gold);}
+.basic .info-banner{background:rgba(201,168,76,.05);border-color:rgba(201,168,76,.2);}
+.basic .btn-info{background:var(--gold);color:var(--black);}
+.basic .btn-info:hover{background:var(--gold-light);}
+.basic .progress-fill{background:linear-gradient(90deg,var(--gold-dark),var(--gold));}
+.basic .nav-tab.active{color:var(--gold);}
+.basic .nav-tab.active::after{background:var(--gold);}
+
+/* INTERMEDIATE = silver/blue */
+.inter .hero-tag{background:rgba(158,170,184,.1);border-color:rgba(158,170,184,.3);color:var(--silver-light);}
+.inter .hero-title em{color:var(--silver-light);}
+.inter .hero-bg{background:radial-gradient(ellipse at 80% 50%,rgba(100,130,160,.1) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(100,130,160,.07) 0%,transparent 50%);}
+.inter .btn-primary{background:var(--silver-light);color:var(--black);}
+.inter .btn-primary:hover{background:#ddeeff;box-shadow:0 8px 24px rgba(150,180,220,.3);}
+.inter .btn-secondary{color:var(--silver-light);border-color:var(--silver-light);}
+.inter .btn-secondary:hover{background:rgba(158,170,184,.08);}
+.inter .stat-item::before{background:var(--silver-light);}
+.inter .stat-num{color:var(--silver-light);}
+.inter .section-eyebrow{color:var(--silver-light);}
+.inter .phase-num{background:rgba(158,170,184,.1);border:1px solid rgba(158,170,184,.3);color:var(--silver-light);}
+.inter .phase-card:hover{border-color:rgba(158,170,184,.4);}
+.inter .phase-card::after{background:linear-gradient(90deg,var(--silver-dark),var(--silver-light));}
+.inter .tag{background:rgba(158,170,184,.06);border:1px solid rgba(158,170,184,.15);color:var(--silver-light);}
+.inter .rep-card::before{background:var(--silver-light);}
+.inter .rep-author{color:var(--silver-light);}
+.inter .rep-tab.active{color:var(--silver-light);border-bottom-color:var(--silver-light);}
+.inter .harmony-level{color:var(--silver-light);}
+.inter .chord-name{color:var(--silver-light);}
+.inter .prog-label{color:var(--silver-light);}
+.inter .about-highlight{border-color:var(--silver-light);background:rgba(158,170,184,.04);}
+.inter .author-card-type{color:var(--silver-light);}
+.inter .info-banner{background:rgba(158,170,184,.05);border-color:rgba(158,170,184,.2);}
+.inter .btn-info{background:var(--silver-light);color:var(--black);}
+.inter .btn-info:hover{background:#ddeeff;}
+.inter .progress-fill{background:linear-gradient(90deg,var(--silver-dark),var(--silver-light));}
+.inter .nav-tab.active{color:var(--silver-light);}
+.inter .nav-tab.active::after{background:var(--silver-light);}
+.inter .header-center .nav-tab.active::after{background:var(--silver-light);}
+
+/* ADVANCED = copper/amber */
+.adv .hero-tag{background:rgba(196,122,58,.12);border-color:rgba(196,122,58,.35);color:var(--copper-light);}
+.adv .hero-title em{color:var(--copper-light);}
+.adv .hero-bg{background:radial-gradient(ellipse at 80% 50%,rgba(196,100,40,.1) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(180,80,20,.06) 0%,transparent 50%);}
+.adv .btn-primary{background:var(--copper-light);color:var(--black);}
+.adv .btn-primary:hover{background:#f0b070;box-shadow:0 8px 24px rgba(196,122,58,.4);}
+.adv .btn-secondary{color:var(--copper-light);border-color:var(--copper-light);}
+.adv .btn-secondary:hover{background:rgba(196,122,58,.08);}
+.adv .stat-item::before{background:var(--copper-light);}
+.adv .stat-num{color:var(--copper-light);}
+.adv .section-eyebrow{color:var(--copper-light);}
+.adv .phase-num{background:rgba(196,122,58,.1);border:1px solid rgba(196,122,58,.3);color:var(--copper-light);}
+.adv .phase-card:hover{border-color:rgba(196,122,58,.4);}
+.adv .phase-card::after{background:linear-gradient(90deg,var(--copper-dark),var(--copper-light));}
+.adv .tag{background:rgba(196,122,58,.07);border:1px solid rgba(196,122,58,.18);color:var(--copper-light);}
+.adv .rep-card::before{background:var(--copper-light);}
+.adv .rep-author{color:var(--copper-light);}
+.adv .rep-tab.active{color:var(--copper-light);border-bottom-color:var(--copper-light);}
+.adv .harmony-level{color:var(--copper-light);}
+.adv .chord-name{color:var(--copper-light);}
+.adv .prog-label{color:var(--copper-light);}
+.adv .about-highlight{border-color:var(--copper-light);background:rgba(196,122,58,.05);}
+.adv .author-card-type{color:var(--copper-light);}
+.adv .info-banner{background:rgba(196,122,58,.06);border-color:rgba(196,122,58,.22);}
+.adv .btn-info{background:var(--copper-light);color:var(--black);}
+.adv .btn-info:hover{background:#f0b070;}
+.adv .progress-fill{background:linear-gradient(90deg,var(--copper-dark),var(--copper-light));}
+.adv .nav-tab.active{color:var(--copper-light);}
+.adv .nav-tab.active::after{background:var(--copper-light);}
+</style>
+</head>
+<body>
+
+<!-- ==================== LOGIN ==================== -->
+<div id="login-screen">
+  <div class="login-wrapper">
+    <div class="login-art">
+      <div class="login-art-circles">
+        <div class="c c1"></div><div class="c c2"></div><div class="c c3"></div>
+      </div>
+      <div class="login-art-content">
+        <div class="login-guitar-icon">🎸</div>
+        <div class="login-art-title">Violão<br>Jazz</div>
+        <div class="login-art-sub">Básico · Intermediário · Avançado</div>
+      </div>
+    </div>
+    <div class="login-form-side">
+      <div class="login-label">Instituto Urbano Rocha</div>
+      <div class="login-title">Acesse o curso</div>
+      <div class="login-sub">Entre com suas credenciais para acessar a plataforma de Violão Popular Jazz — todos os três níveis.</div>
+      <div class="form-group">
+        <label>Usuário</label>
+        <input type="text" id="user-input" placeholder="seu.nome ou email">
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" id="pass-input" placeholder="••••••••">
+        <div class="login-hint">
+          Demo — Básico: aluno / jazz2025<br>
+          Intermediário: inter / jazz2025<br>
+          Avançado: avancado / jazz2025
+        </div>
+      </div>
+      <button class="btn-login" onclick="doLogin()">Entrar →</button>
+      <div class="login-error" id="login-error">⚠ Usuário ou senha incorretos.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== APP ==================== -->
+<div id="app">
+
+  <!-- HEADER -->
+  <header class="header" id="main-header">
+    <div class="header-brand" onclick="showSection('inicio')">
+      <div class="brand-mark">IUR</div>
+      <div>
+        <div class="brand-name">Instituto Urbano Rocha</div>
+        <div class="brand-course" id="brand-course-label">Violão Popular Jazz · Básico</div>
+      </div>
+    </div>
+    <nav class="header-center" id="main-nav">
+      <button class="nav-tab active" onclick="showSection('inicio')">Início</button>
+      <button class="nav-tab" onclick="showSection('fases')">Fases</button>
+      <button class="nav-tab" onclick="showSection('repertorio')">Repertório</button>
+      <button class="nav-tab" onclick="showSection('tecnicas')">Técnicas</button>
+      <button class="nav-tab" onclick="showSection('harmonia')">Harmonia</button>
+      <button class="nav-tab" onclick="showSection('sobre')">Sobre</button>
+    </nav>
+    <div class="header-right">
+      <div class="level-switcher">
+        <button class="lvl-btn active-basic" id="btn-basic" onclick="setLevel('basic')">Básico</button>
+        <button class="lvl-btn" id="btn-inter" onclick="setLevel('inter')">Intermediário</button>
+        <button class="lvl-btn" id="btn-adv" onclick="setLevel('adv')">Avançado</button>
+      </div>
+      <div class="user-badge">Olá, <span id="user-name">Aluno</span></div>
+      <button class="btn-logout" onclick="doLogout()">Sair</button>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav" id="mobile-nav">
+    <button class="nav-tab active" onclick="showSection('inicio')">Início</button>
+    <button class="nav-tab" onclick="showSection('fases')">Fases</button>
+    <button class="nav-tab" onclick="showSection('repertorio')">Repertório</button>
+    <button class="nav-tab" onclick="showSection('tecnicas')">Técnicas</button>
+    <button class="nav-tab" onclick="showSection('harmonia')">Harmonia</button>
+    <button class="nav-tab" onclick="showSection('sobre')">Sobre</button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: INÍCIO -->
+  <!-- ============================================================ -->
+  <section class="section active" id="sec-inicio">
+
+    <!-- BASIC HERO -->
+    <div class="level-panel active basic" id="hero-basic">
+      <div class="hero basic">
+        <div class="hero-bg"></div><div class="hero-lines"></div>
+        <div class="hero-content">
+          <div class="hero-tag">Nível Básico · Instituto Urbano Rocha</div>
+          <h1 class="hero-title">Violão <em>Popular</em><br>& Jazz</h1>
+          <p class="hero-sub">Uma jornada musical construída sobre raízes brasileiras e a sofisticação harmônica do jazz. Do acorde básico à improvisação consciente — passo a passo.</p>
+          <div class="hero-actions">
+            <button class="btn-primary basic" onclick="showSection('fases')">Explorar Fases →</button>
+            <a href="https://urbajoe.github.io/curric_mus/" target="_blank" class="btn-secondary basic">Currículo Completo</a>
+          </div>
+        </div>
+        <div class="hero-stats basic">
+          <div class="stat-item basic"><div class="stat-num basic">04</div><div class="stat-label">Fases</div></div>
+          <div class="stat-item basic"><div class="stat-num basic">8</div><div class="stat-label">Meses</div></div>
+          <div class="stat-item basic"><div class="stat-num basic">🇧🇷</div><div class="stat-label">Foco BR</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTER HERO -->
+    <div class="level-panel inter" id="hero-inter">
+      <div class="hero inter">
+        <div class="hero-bg"></div><div class="hero-lines"></div>
+        <div class="hero-content">
+          <div class="hero-tag">Nível Intermediário · Instituto Urbano Rocha</div>
+          <h1 class="hero-title">Harmonia <em>Avançada</em><br>& Improvisação</h1>
+          <p class="hero-sub">Aprofundamento no vocabulário jazzístico brasileiro. Reharmonização, improvisação modal e bebop, arranjo solo e a grande tradição do samba-jazz e do choro moderno.</p>
+          <div class="hero-actions">
+            <button class="btn-primary inter" onclick="showSection('fases')">Ver Fases →</button>
+            <a href="https://urbajoe.github.io/curric_mus/" target="_blank" class="btn-secondary inter">Currículo Completo</a>
+          </div>
+        </div>
+        <div class="hero-stats inter">
+          <div class="stat-item inter"><div class="stat-num inter">04</div><div class="stat-label">Fases</div></div>
+          <div class="stat-item inter"><div class="stat-num inter">10</div><div class="stat-label">Meses</div></div>
+          <div class="stat-item inter"><div class="stat-num inter">🎷</div><div class="stat-label">Bebop/MPB</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADV HERO -->
+    <div class="level-panel adv" id="hero-adv">
+      <div class="hero adv">
+        <div class="hero-bg"></div><div class="hero-lines"></div>
+        <div class="hero-content">
+          <div class="hero-tag">Nível Avançado · Instituto Urbano Rocha</div>
+          <h1 class="hero-title">Performance <em>Artística</em><br>& Composição</h1>
+          <p class="hero-sub">O ápice da formação em violão popular jazz. Composição original, arranjo orquestral para violão solo, contraponto jazzístico e a tradição máxima do violão brasileiro de concerto.</p>
+          <div class="hero-actions">
+            <button class="btn-primary adv" onclick="showSection('fases')">Ver Fases →</button>
+            <a href="https://urbajoe.github.io/curric_mus/" target="_blank" class="btn-secondary adv">Currículo Completo</a>
+          </div>
+        </div>
+        <div class="hero-stats adv">
+          <div class="stat-item adv"><div class="stat-num adv">04</div><div class="stat-label">Fases</div></div>
+          <div class="stat-item adv"><div class="stat-num adv">12</div><div class="stat-label">Meses</div></div>
+          <div class="stat-item adv"><div class="stat-num adv">🏆</div><div class="stat-label">Recital</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OVERVIEW CONTENT (shared, themed) -->
+    <div class="content-area" id="inicio-content">
+      <div id="info-banner-basic" class="level-panel active">
+        <div class="info-banner basic">
+          <div class="info-banner-text">
+            <h3>Informações, valores e inscrições</h3>
+            <p>Conheça o currículo detalhado, metodologia, horários e tudo sobre o Instituto Urbano Rocha.</p>
+          </div>
+          <a href="https://urbajoe.github.io/curric_mus/" target="_blank" class="btn-info basic">Ver Currículo ↗</a>
+        </div>
+      </div>
+      <div id="info-banner-inter" class="level-panel">
+        <div class="info-banner inter">
+          <div class="info-banner-text">
+            <h3>Pré-requisito: conclusão do Nível Básico</h3>
+            <p>O nível intermediário aprofunda harmonia, improvisação e arranjo. Consulte valores e turmas no currículo completo.</p>
+          </div>
+          <a href="https://urbajoe.github.io/curric_mus/" target="_blank" class="btn-info inter">Ver Currículo ↗</a>
+        </div>
+      </div>
+      <div id="info-banner-adv" class="level-panel">
+        <div class="info-banner adv">
+          <div class="info-banner-text">
+            <h3>Pré-requisito: conclusão do Nível Intermediário</h3>
+            <p>Formação artística completa com foco em performance, composição e identidade autoral. Consulte o currículo para detalhes.</p>
+          </div>
+          <a href="https://urbajoe.github.io/curric_mus/" target="_blank" class="btn-info adv">Ver Currículo ↗</a>
+        </div>
+      </div>
+
+      <!-- Phase overview cards rendered by JS -->
+      <div id="overview-cards"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: FASES -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec-fases">
+    <div class="content-area">
+      <div class="section-header" id="fases-header">
+        <div>
+          <div class="section-eyebrow" id="fases-eyebrow">Conteúdo Programático — Básico</div>
+          <div class="section-title">Fases do Curso</div>
+        </div>
+        <div class="section-meta"><span class="br-legend">🇧🇷 = Autor Brasileiro</span></div>
+      </div>
+      <div id="fases-content"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: REPERTÓRIO -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec-repertorio">
+    <div class="content-area">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow" id="rep-eyebrow">Sugestão de Repertório — Básico</div>
+          <div class="section-title">Obras por Fase</div>
+        </div>
+        <div class="section-meta"><span class="br-legend">🇧🇷 Compositor Brasileiro</span></div>
+      </div>
+      <div class="repertoire-tabs" id="rep-tabs"></div>
+      <div id="rep-content"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: TÉCNICAS -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec-tecnicas">
+    <div class="content-area">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow" id="tec-eyebrow">Conteúdo Técnico — Básico</div>
+          <div class="section-title">Técnicas Essenciais</div>
+        </div>
+      </div>
+      <div id="tec-content"></div>
+      <div class="divider"></div>
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow" id="authors-eyebrow">Patrimônio Cultural</div>
+          <div class="section-title">Autores Brasileiros em Destaque</div>
+        </div>
+      </div>
+      <div class="authors-grid" id="authors-content"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: HARMONIA -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec-harmonia">
+    <div class="content-area">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow" id="harm-eyebrow">Teoria & Prática — Básico</div>
+          <div class="section-title">Harmonia do Violão Jazz</div>
+        </div>
+      </div>
+      <div id="harm-content"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: SOBRE -->
+  <!-- ============================================================ -->
+  <section class="section" id="sec-sobre">
+    <div class="content-area">
+      <div id="sobre-banner"></div>
+      <div class="about-grid">
+        <div class="about-text" id="sobre-text"></div>
+        <div class="about-features" id="sobre-features"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">Instituto Urbano Rocha</div>
+      <div class="footer-text">Violão Popular Jazz · Básico · Intermediário · Avançado · © 2025</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:9px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Mais informações</div>
+      <a href="https://urbajoe.github.io/curric_mus/" target="_blank" class="footer-link">urbajoe.github.io/curric_mus ↗</a>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:9px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Desenvolvido para</div>
+      <div style="font-size:12px;color:var(--text);">Instituto Urbano Rocha</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const DATA = {
+  basic: {
+    label:'Básico', months:'8 Meses', icon:'🎸', emoji:'🇧🇷',
+    heroStat:'60+ Obras',
+    phases:[
+      {
+        num:'01', title:'Fundamentos do Violão',
+        sub:'Postura · Mão direita · Primeiros acordes · Leitura básica',
+        period:'Meses 1–2',
+        tags:['Postura','Leitura','Bossa Nova 🇧🇷'],
+        exercicios:[
+          {name:'Escala de Dó Maior — 1ª posição',author:'Método'},
+          {name:'Arpejo p-i-m-a básico',author:'Técnica'},
+          {name:'Escalas em Lá menor natural',author:'Mel. Minor'},
+          {name:'Cromáticos de coordenação',author:'Dedilhado'},
+          {name:'Rasgueado simples 4/4',author:'Rítmico'},
+        ],
+        estudos:[
+          {name:'Estudo em Mi menor',author:'🇧🇷 Villa-Lobos',br:true},
+          {name:'Estudo nº 1 op.60',author:'Carcassi'},
+          {name:'Lição 1',author:'Fernando Sor'},
+          {name:'Estudo em Dó Maior',author:'🇧🇷 Dilermando Reis',br:true},
+        ],
+        obras:[
+          {name:'Garota de Ipanema — Melodia',author:'🇧🇷 Tom Jobim / Vinícius',br:true},
+          {name:'Choro nº 1',author:'🇧🇷 Villa-Lobos',br:true},
+          {name:'Peixinhos do Mar',author:'🇧🇷 Folclore BR',br:true},
+          {name:'Ode to Joy — adaptação',author:'Beethoven'},
+          {name:'Asa Branca',author:'🇧🇷 Luiz Gonzaga',br:true},
+        ]
+      },
+      {
+        num:'02', title:'Harmonia Jazz & Choro',
+        sub:'Tétrades · Cadências · II-V-I · Levadas de Choro',
+        period:'Meses 3–4',
+        tags:['Tétrades','II-V-I','Choro 🇧🇷'],
+        exercicios:[
+          {name:'Tétrades: Maj7, m7, Dom7',author:'Harmonia Jazz'},
+          {name:'Cadência II-V-I em Dó',author:'Progressão'},
+          {name:'Baixo com polegar — Choro',author:'🇧🇷 Carioca',br:true},
+          {name:'Acordes com 9ª e 13ª',author:'Extensões'},
+          {name:'Levadas 2/4 e 4/4',author:'🇧🇷 Samba/Choro',br:true},
+        ],
+        estudos:[
+          {name:'Chord Etudes Jazz',author:'Ted Greene'},
+          {name:'Guitar Method vol.1',author:'Mickey Baker'},
+          {name:'Choros vol.1',author:'🇧🇷 Villa-Lobos',br:true},
+          {name:'Método Violão 7 Cordas',author:'🇧🇷 Rafael Rabello',br:true},
+        ],
+        obras:[
+          {name:'Samba de Uma Nota Só',author:'🇧🇷 Tom Jobim / Newton Mendonça',br:true},
+          {name:'Autumn Leaves — acordes',author:'Joseph Kosma'},
+          {name:'Vou Vivendo',author:'🇧🇷 Chico Buarque',br:true},
+          {name:'Noite de Gala',author:'🇧🇷 Waldir Azevedo',br:true},
+          {name:'Solidão',author:'🇧🇷 Noel Rosa',br:true},
+        ]
+      },
+      {
+        num:'03', title:'Melodia, Escalas Modais & MPB',
+        sub:'Modos gregos · Fraseo jazzístico · Solo melódico',
+        period:'Meses 5–6',
+        tags:['Modos','Fraseo','MPB 🇧🇷'],
+        exercicios:[
+          {name:'Modo Dórico — Re dórico',author:'Modal'},
+          {name:'Modo Mixolídio — Sol mix.',author:'Modal'},
+          {name:'Pentatônica menor',author:'Blues/Jazz'},
+          {name:'Fraseo bebop básico',author:'Estilo'},
+          {name:'Substituição de trítono',author:'Harmonia'},
+        ],
+        estudos:[
+          {name:'Jazz Guitar Handbook',author:'Jody Fisher'},
+          {name:'Improvisação no Choro',author:'🇧🇷 Almir Chediak',br:true},
+          {name:'Violão Brasileiro vol.2',author:'🇧🇷 Baden Powell',br:true},
+          {name:'Escolas de Jazz',author:'🇧🇷 H. Eisenmann',br:true},
+        ],
+        obras:[
+          {name:'Consolação',author:'🇧🇷 Baden Powell / Vinícius',br:true},
+          {name:'Canto de Ossanha',author:'🇧🇷 Baden Powell / Vinícius',br:true},
+          {name:'Manhã de Carnaval',author:'🇧🇷 Luiz Bonfá',br:true},
+          {name:'Fly Me to the Moon — solo',author:'Bart Howard'},
+          {name:'Garanhuns',author:'🇧🇷 Edu Lobo',br:true},
+        ]
+      },
+      {
+        num:'04', title:'Performance & Samba-Jazz',
+        sub:'Improvisação livre · Arranjo · Standards brasileiros',
+        period:'Meses 7–8',
+        tags:['Impro','Arranjo','Samba-Jazz 🇧🇷'],
+        exercicios:[
+          {name:'Improvisação sobre II-V-I',author:'Impro Jazz'},
+          {name:'Comping solo (harm.+mel.)',author:'Arranjo'},
+          {name:'Lick patterns bebop',author:'Vocabulário'},
+          {name:'Walking bass em violão',author:'🇧🇷 Samba-Jazz',br:true},
+          {name:'Reharmonização básica',author:'Harmonia'},
+        ],
+        estudos:[
+          {name:'Bebop Guitar',author:'Jack Grassel'},
+          {name:'Violão Samba-Jazz',author:'🇧🇷 Toquinho',br:true},
+          {name:'Jazz Improv. for Guitar',author:'Bruce Saunders'},
+          {name:'Songbook Tom Jobim vol.1',author:'🇧🇷 A. Chediak',br:true},
+        ],
+        obras:[
+          {name:'Wave',author:'🇧🇷 Tom Jobim',br:true},
+          {name:'Insensatez',author:'🇧🇷 Tom Jobim / Vinícius',br:true},
+          {name:'So What',author:'Miles Davis'},
+          {name:'Samba do Avião',author:'🇧🇷 Tom Jobim',br:true},
+          {name:'Felicidade',author:'🇧🇷 Tom Jobim / Vinícius',br:true},
+        ]
+      }
+    ],
+    repertorio:[
+      {
+        label:'Fase 1',
+        pieces:[
+          {title:'Garota de Ipanema',author:'🇧🇷 Antônio Carlos Jobim & Vinícius de Moraes',br:true,desc:'Melodia simples em primeira posição. Excelente para praticar ligaduras suaves e fraseado Bossa Nova. Tonalidade de Fá maior.',style:'Bossa Nova'},
+          {title:'Choro nº 1',author:'🇧🇷 Heitor Villa-Lobos',br:true,desc:'Primeiro contato com o choro clássico brasileiro. Estrutura A-A-B de fácil assimilação. Referência obrigatória da nossa cultura.',style:'Choro'},
+          {title:'Peixinhos do Mar',author:'🇧🇷 Folclore Brasileiro',br:true,desc:'Melodia folclórica ideal para iniciantes. Tonalidade de Mi menor, explora cordas soltas e coordenação básica.',style:'Folclore'},
+          {title:'Ode to Joy',author:'Beethoven (arr. violão)',br:false,desc:'Adaptação para violão solo. Foco em leitura de notas na 1ª posição e precisão na mão esquerda.',style:'Erudito'},
+          {title:'Asa Branca',author:'🇧🇷 Luiz Gonzaga & Humberto Teixeira',br:true,desc:'Hino do forró nordestino. Melodia diatônica em Mi menor. Conexão com a música popular brasileira.',style:'Forró/Baião'},
+          {title:'Se Eu Quiser Falar com Deus',author:'🇧🇷 Gilberto Gil',br:true,desc:'Canção de MPB com acordes abertos simples (G, Em, C, D). Introdução ao ritmo baiano e à Tropicália.',style:'MPB/Tropicália'},
+        ]
+      },
+      {
+        label:'Fase 2',
+        pieces:[
+          {title:'Samba de Uma Nota Só',author:'🇧🇷 Tom Jobim & Newton Mendonça',br:true,desc:'Masterclass de harmonia jazzística dentro da Bossa Nova. Melodia estática sobre rica progressão harmônica.',style:'Bossa Nova'},
+          {title:'Autumn Leaves',author:'Joseph Kosma',br:false,desc:'Standard jazz por excelência. Progressão II-V-I em Sol menor. Melodia cantabile sobre progressão funcional clara.',style:'Jazz Standard'},
+          {title:'Vou Vivendo',author:'🇧🇷 Chico Buarque',br:true,desc:'Canção suave com progressão harmônica rica. Ótima para explorar acordes com 7ª e 9ª em contexto lírico.',style:'MPB'},
+          {title:'Noite de Gala',author:'🇧🇷 Waldir Azevedo',br:true,desc:'Choro clássico. Levadas em 2/4, baixo com polegar e ornamentos idiomáticos do gênero.',style:'Choro'},
+          {title:'Solidão',author:'🇧🇷 Noel Rosa & Vadico',br:true,desc:'Clássico do samba-canção. Progressão rica com cromatismos do período de ouro.',style:'Samba-Canção'},
+          {title:'All of Me',author:'Gerald Marks & Seymour Simons',br:false,desc:'Standard com progressão repleta de dominantes secundárias. Excelente para voice leading.',style:'Jazz Standard'},
+        ]
+      },
+      {
+        label:'Fase 3',
+        pieces:[
+          {title:'Consolação',author:'🇧🇷 Baden Powell & Vinícius de Moraes',br:true,desc:'Afro-samba clássico que explora o modo dórico com profundidade espiritual. Referência do violão modal brasileiro.',style:'Afro-Samba'},
+          {title:'Canto de Ossanha',author:'🇧🇷 Baden Powell & Vinícius de Moraes',br:true,desc:'Fusão de ritmos afro-brasileiros e harmonia jazzística. Modal e rico em polirritmia.',style:'Afro-Samba'},
+          {title:'Manhã de Carnaval',author:'🇧🇷 Luiz Bonfá & Antônio Maria',br:true,desc:'Tema de Orfeu Negro. Uma das melodias brasileiras mais gravadas no mundo. Fraseo modal e rubato.',style:'Bossa/MPB'},
+          {title:'Fly Me to the Moon',author:'Bart Howard',br:false,desc:'Standard em compasso ternário com II-V-I contínuo. Solo melódico sobre progressões ricas em tensões.',style:'Jazz Standard'},
+          {title:'Garanhuns',author:'🇧🇷 Edu Lobo',br:true,desc:'Sofisticado, modal e nordestino. Métricas assimétrias e vocabulário jazzístico.',style:'MPB Avançada'},
+          {title:'Blue Bossa',author:'Kenny Dorham',br:false,desc:'Standard jazz com influência bossanovística. Modulação menor→maior. Fraseo modal pentatônico.',style:'Jazz/Bossa'},
+        ]
+      },
+      {
+        label:'Fase 4',
+        pieces:[
+          {title:'Wave',author:'🇧🇷 Antônio Carlos Jobim',br:true,desc:'Obra-prima de Jobim. Progressão elaborada com reharmonizações e substituições de trítono.',style:'Bossa Nova'},
+          {title:'Insensatez',author:'🇧🇷 Tom Jobim & Vinícius',br:true,desc:'Harmonia derivada de Chopin. Progressão cromática sofisticada. Comping e arranjo solo.',style:'Bossa Nova'},
+          {title:'So What',author:'Miles Davis',br:false,desc:'Modal jazz. Re dórico e Mib dórico. Improvisação modal livre. Vocabulário essencial do jazz moderno.',style:'Modal Jazz'},
+          {title:'Samba do Avião',author:'🇧🇷 Tom Jobim',br:true,desc:'Hino ao Rio. II-V-Is encadeados em ritmo acelerado. Desafiador como peça de performance.',style:'Bossa/Samba-Jazz'},
+          {title:'Felicidade',author:'🇧🇷 Tom Jobim & Vinícius',br:true,desc:'Valsa-samba com tônicas alternativas. Arranjo solo e walking bass.',style:'Valsa-Samba'},
+          {title:'Misty',author:'Erroll Garner',br:false,desc:'Balada jazz com voice leading refinado. Comping solo — harmonia e melodia simultâneas.',style:'Jazz Ballad'},
+        ]
+      }
+    ],
+    tecnicas:[
+      {icon:'🖐️',name:'Mão Direita — Dedilhado',desc:'Toque com p-i-m-a. Padrões de arpejo e campanella. Toque apoiado e livre.',pct:65,fases:'Fase 1–2'},
+      {icon:'✋',name:'Mão Esquerda — Digitação',desc:'Força e independência dos dedos. Cordas limpas, posição do polegar. Extensões para acordes jazz.',pct:70,fases:'Fase 1–3'},
+      {icon:'🎵',name:'Levadas Rítmicas',desc:'Samba, choro, bossa nova e baião. Padrões rítmicos idiomáticos brasileiros como base do fraseio jazzístico.',pct:55,fases:'Fase 2–3'},
+      {icon:'🎸',name:'Acordes Pestana',desc:'Barra plena e parcial. Desenvolvimento gradual da força. Formas m7, Maj7 e Dom7 em posições móveis.',pct:60,fases:'Fase 2–3'},
+      {icon:'🎼',name:'Leitura Musical',desc:'Clave de sol, 1ª e 2ª posição. Cifras, tablatura e partitura. Leitura à primeira vista.',pct:50,fases:'Todo o curso'},
+      {icon:'🎙️',name:'Expressividade & Dinâmica',desc:'Vibrato, glissando, hammer-on e pull-off. Controle pp a ff. Fraseado com intenção musical.',pct:45,fases:'Fase 3–4'},
+    ],
+    autores:[
+      {name:'Baden Powell',type:'Violão / Compositor',desc:'O maior violonista jazzístico do Brasil. Criou com Vinícius os afro-sambas, sintetizando ritmos afro-brasileiros e harmonia jazz. Referência absoluta do violão popular brasileiro.'},
+      {name:'Antônio Carlos Jobim',type:'Compositor / Pianista',desc:'O arquiteto da Bossa Nova. Transformou o jazz americano com a sensibilidade harmônica e melódica brasileira. O mais gravado músico do Brasil no mundo.'},
+      {name:'Heitor Villa-Lobos',type:'Clássico / Violão',desc:'O maior compositor clássico brasileiro e pai do violão erudito nacional. Seus Estudos e Choros são peças obrigatórias para qualquer violonista.'},
+      {name:'Chico Buarque',type:'MPB / Compositor',desc:'Poeta e compositor com canções de harmonia sofisticada. Essencial para o repertório de violão popular com profundidade harmônica e cultural inigualável.'},
+      {name:'Luiz Bonfá',type:'Violonista / Compositor',desc:'Co-criador da Bossa Nova. Autor de Manhã de Carnaval, internacionalmente reconhecido e influente no jazz americano.'},
+      {name:'Edu Lobo',type:'MPB / Compositor',desc:'Une elementos nordestinos a harmonias modais e jazzísticas. Composições estudadas por harmonia avançada e estruturas métricas incomuns.'},
+    ],
+    harmonia:{
+      acordes:[
+        {titulo:'Fase 1 — Tríades e Acordes Abertos',level:'Fundamental',chords:[
+          {name:'Am',desc:'Lá menor — tríade menor'},{name:'E',desc:'Mi maior — tríade maior'},
+          {name:'G',desc:'Sol maior — acorde aberto'},{name:'C',desc:'Dó maior — acorde aberto'},
+          {name:'D',desc:'Ré maior — 1ª posição'},{name:'Em',desc:'Mi menor — aberto'},
+          {name:'F',desc:'Fá maior — pestana básica'},{name:'Dm',desc:'Ré menor — 1ª posição'},
+        ]},
+        {titulo:'Fase 2 — Tétrades Jazz',level:'Intermediário Básico',chords:[
+          {name:'Cmaj7',desc:'Dó maior com 7ª maior'},{name:'Dm7',desc:'Ré menor com 7ª menor'},
+          {name:'G7',desc:'Sol dominante com 7ª'},{name:'Am7',desc:'Lá menor com 7ª'},
+          {name:'Em7b5',desc:'Mi meio-diminuto'},{name:'A7',desc:'Lá dominante — V/Dm'},
+          {name:'Fmaj7',desc:'Fá maior com 7ª maior'},{name:'B7',desc:'Si dominante — V/Em'},
+        ]},
+        {titulo:'Fase 3 & 4 — Extensões e Tensões',level:'Avançado Básico',chords:[
+          {name:'Cmaj9',desc:'Com 9ª — tensão suave'},{name:'G9',desc:'Dom. com 9ª'},
+          {name:'Dm9',desc:'Menor com 7ª e 9ª'},{name:'G7b9',desc:'Dom. com 9ª bemol'},
+          {name:'C6/9',desc:'Acorde típico Bossa Nova'},{name:'D13',desc:'Dom. com 13ª'},
+          {name:'G7#11',desc:'Dom. com 11ª aumentada'},{name:'Am7+',desc:'Menor c/ 5ª aum.'},
+        ]},
+      ],
+      progressoes:[
+        {label:'Cadência II-V-I (Maior)',formula:'Dm7 → G7 → Cmaj7',desc:'Base de todo o jazz. Resolução do II (supertônica) para o V (dominante) para o I (tônica). Presente em quase todos os standards.'},
+        {label:'Cadência II-V-I (Menor)',formula:'Em7b5 → A7b9 → Dm7',desc:'Versão menor da cadência. O V tem 9ª bemol, criando tensão máxima antes da resolução no Im7.'},
+        {label:'Progressão Bossa Nova',formula:'Cmaj7 → Cm7 → F7 → Bmaj7',desc:'Movimento cromático típico da Bossa Nova, muito usado por Jobim — presente em Wave, Insensatez e outras.'},
+        {label:'Blues Jazz Básico',formula:'C7 → F7 → C7 → G7',desc:'Progressão blues de 12 compassos. Base para improvisação com pentatônica. Fundamental no vocabulário jazz.'},
+      ]
+    },
+    sobre:{
+      title:'Violão Popular Jazz — Nível Básico',
+      text:[
+        'O curso de Violão Popular Jazz do Instituto Urbano Rocha foi concebido para unir a riqueza musical do Brasil com a sofisticação harmônica do jazz americano — criando um percurso pedagógico único, com raízes profundas na nossa cultura.',
+        'Desde a Fase 1, a música brasileira é protagonista: folclore, choro, samba, bossa nova e MPB são pontos de partida e chegada. Heitor Villa-Lobos, Tom Jobim, Baden Powell, Chico Buarque e Edu Lobo não são apenas referências — são o coração do programa.',
+        'Ao mesmo tempo, os grandes standards do jazz americano (Autumn Leaves, So What, Fly Me to the Moon) são integrados para desenvolver o vocabulário internacional do gênero, criando músicos completos e versáteis.',
+      ],
+      highlight:'"Aprender jazz através da música brasileira não é um atalho — é o caminho mais rico, porque carregamos um vocabulário harmônico e rítmico que o mundo inteiro admira."',
+      features:[
+        {icon:'🇧🇷',title:'Foco na Música Brasileira',desc:'Mais de 70% do repertório é formado por compositores brasileiros. Choro, samba, bossa nova, MPB e afro-samba estudados com profundidade.'},
+        {icon:'🎵',title:'Harmonia Jazz Aplicada',desc:'Tétrades, tensões, modos gregos e cadências II-V-I ensinados de forma prática, sempre em contexto musical.'},
+        {icon:'📚',title:'Referências Bibliográficas Selecionadas',desc:'Métodos de Villa-Lobos, Almir Chediak, Baden Powell, Ted Greene e outros mestres.'},
+        {icon:'🎸',title:'Técnica Progressiva',desc:'Do dedilhado básico à improvisação consciente, cada fase constrói sobre a anterior.'},
+        {icon:'🎤',title:'Performance Desde o Início',desc:'Peças para recital desde a Fase 1. A música é para ser tocada e compartilhada.'},
+      ]
+    }
+  },
+
+  // ============================================================
+  // INTERMEDIÁRIO
+  // ============================================================
+  inter:{
+    label:'Intermediário', months:'10 Meses', icon:'🎷', emoji:'🎷',
+    heroStat:'80+ Obras',
+    phases:[
+      {
+        num:'01', title:'Reharmonização & Linguagem Bebop',
+        sub:'Substituição de trítono · Linhas bebop · Encadeamentos',
+        period:'Meses 1–2',
+        tags:['Reharm.','Bebop','Choro Moderno 🇧🇷'],
+        exercicios:[
+          {name:'Substituição de trítono — prática',author:'Reharm. Jazz'},
+          {name:'Linhas bebop sobre Dom7',author:'C. Parker / Gillespie'},
+          {name:'Encadeamentos ii-V-I em todas as tonalidades',author:'Ciclo das 5ªs'},
+          {name:'Acordes de passagem cromática',author:'Voice Leading'},
+          {name:'Choro moderno: dobramento de baixo',author:'🇧🇷 Estilo Carioca',br:true},
+        ],
+        estudos:[
+          {name:'Bebop Guitar — vol.2',author:'Jack Grassel'},
+          {name:'Choro Moderno — Estudo',author:'🇧🇷 Raphael Rabello',br:true},
+          {name:'The Advancing Guitarist',author:'Mick Goodrick'},
+          {name:'Songbook Chico Buarque',author:'🇧🇷 Almir Chediak',br:true},
+        ],
+        obras:[
+          {name:"There Will Never Be Another You",author:'Harry Warren'},
+          {name:'Brigas Nunca Mais',author:'🇧🇷 Tom Jobim / Vinícius',br:true},
+          {name:'Doce de Coco',author:'🇧🇷 Zé Bodega',br:true},
+          {name:'Donna Lee',author:'Charlie Parker'},
+          {name:'Sabiá',author:'🇧🇷 Tom Jobim / Chico Buarque',br:true},
+        ]
+      },
+      {
+        num:'02', title:'Arranjo Solo & Contraponto Jazzístico',
+        sub:'Melodia + Baixo + Harmonia · Polifonia · Ostinato',
+        period:'Meses 3–4',
+        tags:['Arranjo','Polifonia','Samba-Jazz 🇧🇷'],
+        exercicios:[
+          {name:'Coral jazz a 2 vozes',author:'Contraponto'},
+          {name:'Violão solo: melodia + baixo simultâneos',author:'Arranjo'},
+          {name:'Ostinato de baixo em samba-jazz',author:'🇧🇷 Samba-Jazz',br:true},
+          {name:'Inner voices — vozes internas',author:'Harmonia Modal'},
+          {name:'Drop-2 e Drop-3 voicings',author:'Voicing Jazz'},
+        ],
+        estudos:[
+          {name:'Chord Chemistry',author:'Ted Greene'},
+          {name:'Arranjos para Violão Solo',author:'🇧🇷 Paulo Bellinati',br:true},
+          {name:'Jazz Guitar Chord System',author:'Barney Kessel'},
+          {name:'Violão — Técnica e Arte',author:'🇧🇷 Henrique Pinto',br:true},
+        ],
+        obras:[
+          {name:'Feitio de Oração',author:'🇧🇷 Noel Rosa / Vadico',br:true},
+          {name:'Body and Soul — arranjo',author:'J. Green / Heyman'},
+          {name:'Carinhoso',author:'🇧🇷 Pixinguinha',br:true},
+          {name:'Lamento',author:'🇧🇷 Pixinguinha',br:true},
+          {name:'My Foolish Heart',author:'Victor Young'},
+        ]
+      },
+      {
+        num:'03', title:'Improvisação Modal & Escalas Avançadas',
+        sub:'Lídio-dominante · Diminuta · Tons inteiros · Superlocria',
+        period:'Meses 5–7',
+        tags:['Modal Adv.','Diminuta','Afro-Samba 🇧🇷'],
+        exercicios:[
+          {name:'Escala diminuta (dim-dom)',author:'Harmonia Simétrica'},
+          {name:'Escala de tons inteiros',author:'Impressionismo'},
+          {name:'Modo Lídio-dominante (F#)',author:'Lydian Dominant'},
+          {name:'Superlocria sobre dom.alterado',author:'Alt. Dominant'},
+          {name:'Fusão afro-samba com improvisação modal',author:'🇧🇷 Afro-Jazz',br:true},
+        ],
+        estudos:[
+          {name:'Thesaurus of Scales',author:'Nicolas Slonimsky'},
+          {name:'Modern Jazz Guitar',author:'Tal Farlow'},
+          {name:'Escalas e Modos no Violão Brasileiro',author:'🇧🇷 Almir Chediak',br:true},
+          {name:'Obra de Baden Powell',author:'🇧🇷 Baden Powell',br:true},
+        ],
+        obras:[
+          {name:'Canto de Xangô',author:'🇧🇷 Baden Powell / Vinícius',br:true},
+          {name:'Nara',author:'🇧🇷 Baden Powell',br:true},
+          {name:'Footprints',author:'Wayne Shorter'},
+          {name:'Infant Eyes',author:'Wayne Shorter'},
+          {name:'Corcovado',author:'🇧🇷 Tom Jobim',br:true},
+        ]
+      },
+      {
+        num:'04', title:'Recital Intermediário & Composição',
+        sub:'Obra autoral · Arranjo de standard · Apresentação pública',
+        period:'Meses 8–10',
+        tags:['Composição','Arranjo','MPB Avançada 🇧🇷'],
+        exercicios:[
+          {name:'Composição: forma A-A-B-A de 32 compassos',author:'Composição'},
+          {name:'Arranjo de standard p/ violão solo',author:'Arranjo'},
+          {name:'Reharmonização de obra brasileira',author:'🇧🇷 Criatividade BR',br:true},
+          {name:'Transcrição de solo',author:'Transcrição'},
+          {name:'Prática de câmara: duo de violões',author:'Música de Câmara'},
+        ],
+        estudos:[
+          {name:'Harmony — Berklee',author:'Walter Piston'},
+          {name:'Tropic Brasil — estudos',author:'🇧🇷 Egberto Gismonti',br:true},
+          {name:'A Arte da Composição no Choro',author:'🇧🇷 Henrique Cazes',br:true},
+          {name:'Jazz Composition',author:'Ted Pease'},
+        ],
+        obras:[
+          {name:'Frevo de Orfeu',author:'🇧🇷 Luiz Bonfá',br:true},
+          {name:'A Lenda do Caboclo',author:'🇧🇷 Villa-Lobos',br:true},
+          {name:'In a Sentimental Mood',author:'Duke Ellington'},
+          {name:'Olha Maria',author:'🇧🇷 Egberto Gismonti',br:true},
+          {name:"Round Midnight",author:'Thelonious Monk'},
+        ]
+      }
+    ],
+    repertorio:[
+      {
+        label:'Fase 1',
+        pieces:[
+          {title:'There Will Never Be Another You',author:'Harry Warren',br:false,desc:'Standard com ciclos de II-V-I em múltiplas tonalidades. Excelente para substituição de trítono.',style:'Jazz Standard'},
+          {title:'Brigas Nunca Mais',author:'🇧🇷 Tom Jobim & Vinícius',br:true,desc:'Bossa Nova sofisticada. Progressão harmônica que exemplifica reharmonização dentro da linguagem brasileira.',style:'Bossa Nova'},
+          {title:'Donna Lee',author:'Charlie Parker',br:false,desc:'Clássico bebop sobre progressão de Indiana. Desenvolve fluidez técnica e vocabulário de linguagem bebop.',style:'Bebop'},
+          {title:'Sabiá',author:'🇧🇷 Tom Jobim & Chico Buarque',br:true,desc:'Canção premiada em Cannes. Harmonia nobre e letra literária. Rica em tensões e cromatismos.',style:'MPB'},
+          {title:'Doce de Coco',author:'🇧🇷 Zé Bodega',br:true,desc:'Choro moderno carioca. Melodia viva sobre progressões com linha de baixo idiomática e ornamentos característicos.',style:'Choro Moderno'},
+        ]
+      },
+      {
+        label:'Fase 2',
+        pieces:[
+          {title:'Carinhoso',author:'🇧🇷 Pixinguinha',br:true,desc:'O mais famoso choro brasileiro. Arranjo solo com melodia, baixo e harmonia simultâneos. Polifonia idiomática.',style:'Choro'},
+          {title:'Lamento',author:'🇧🇷 Pixinguinha',br:true,desc:'Obra densa de Pixinguinha. Linhas contrapontísticas e condução de voz refinada. Estudo de polifonia brasileira.',style:'Choro'},
+          {title:'Body and Soul',author:'J. Green / E. Heyman',br:false,desc:'Balada jazz clássica. Arranjo solo com inner voices e drop-2 voicings. Harmonia densa e expressiva.',style:'Jazz Ballad'},
+          {title:'Feitio de Oração',author:'🇧🇷 Noel Rosa & Vadico',br:true,desc:'Clássico do samba com progressão harmônica rica. Arranjo com baixo contínuo e melodia cantabile.',style:'Samba'},
+          {title:'My Foolish Heart',author:'Victor Young',br:false,desc:'Balada com voice leading refinado. Prática de ostinato harmônico e condução de baixo em violão solo.',style:'Jazz Ballad'},
+        ]
+      },
+      {
+        label:'Fase 3',
+        pieces:[
+          {title:'Canto de Xangô',author:'🇧🇷 Baden Powell & Vinícius',br:true,desc:'Afro-samba sobre Xangô. Improvisação com escala diminuta e fusão afro-jazz de alta complexidade rítmica.',style:'Afro-Samba'},
+          {title:'Nara',author:'🇧🇷 Baden Powell',br:true,desc:'Instrumental de Baden Powell para violão solo. Modal e complexo. Referência máxima do violão jazz brasileiro.',style:'Violão Solo'},
+          {title:'Footprints',author:'Wayne Shorter',br:false,desc:'Modal jazz em compasso 6/4. Escala menor melódica e modo dórico. Improvisação aberta e atmosférica.',style:'Modal Jazz'},
+          {title:'Corcovado',author:'🇧🇷 Tom Jobim',br:true,desc:'Bossa Nova poética. Exploração de tons inteiros sobre progressão impressionista. Improvisação delicada.',style:'Bossa Nova'},
+          {title:'Infant Eyes',author:'Wayne Shorter',br:false,desc:'Balada modal de extrema beleza. Tons inteiros e modo superlocrio sobre progressão alterada.',style:'Modal Jazz'},
+        ]
+      },
+      {
+        label:'Fase 4',
+        pieces:[
+          {title:'Frevo de Orfeu',author:'🇧🇷 Luiz Bonfá',br:true,desc:'Frevo pernambucano adaptado para violão. Virtuosismo técnico e identidade brasileira de alto nível.',style:'Frevo/Bossa'},
+          {title:'A Lenda do Caboclo',author:'🇧🇷 Villa-Lobos',br:true,desc:'Obra do período impressionista de Villa-Lobos. Colorido harmônico único. Técnica refinada de violão solo.',style:'Erudito BR'},
+          {title:'In a Sentimental Mood',author:'Duke Ellington',br:false,desc:'Balada rica de Ellington. Reharmonização e arranjo solo com vozes internas em destaque.',style:'Jazz Ballad'},
+          {title:'Olha Maria',author:'🇧🇷 Egberto Gismonti',br:true,desc:'Obra do violonista-pianista pernambucano mais universal. Técnica extendida, harmonia modal densa.',style:'MPB Avançada'},
+          {title:"Round Midnight",author:'Thelonious Monk',br:false,desc:'Clássico do bebop em tonalidade menor. Reharmonização, cromatismos e caráter nocturno característico.',style:'Bebop'},
+        ]
+      }
+    ],
+    tecnicas:[
+      {icon:'🎼',name:'Substituição de Trítono',desc:'Substituição de dominantes por acordes a trítono de distância. Aplicada em todo o repertório de standards e bossa nova.',pct:70,fases:'Fase 1–2'},
+      {icon:'🎵',name:'Polifonia e Arranjo Solo',desc:'Melodia, baixo e harmonia simultâneos. Drop-2, Drop-3 voicings. Inner voices. Ostinato de baixo em samba-jazz.',pct:75,fases:'Fase 2–3'},
+      {icon:'🎹',name:'Escalas Avançadas',desc:'Diminuta, tons inteiros, lídio-dominante, superlocria. Aplicação em contextos de improvisação jazz e MPB.',pct:65,fases:'Fase 3'},
+      {icon:'🎷',name:'Linguagem Bebop',desc:'Licks e padrões característicos do bebop. Linhas cromaticas, encircling, notas de abordagem. Bird language.',pct:72,fases:'Fase 1–3'},
+      {icon:'🖊️',name:'Composição Formal',desc:'Forma A-A-B-A de 32 compassos. Desenvolvimento motívico. Harmonia funcional e modal. Obra autoral.',pct:60,fases:'Fase 4'},
+      {icon:'🎙️',name:'Transcrição Analítica',desc:'Transcrever e analisar solos de Baden Powell, Jobim e jazzistas americanos. Incorporar vocabulário ao próprio estilo.',pct:68,fases:'Fase 3–4'},
+    ],
+    autores:[
+      {name:'Pixinguinha',type:'Choro / Flauta / Comp.',desc:'Pai do choro brasileiro. Suas obras (Carinhoso, Lamento) são estudos de contraponto e condução de voz únicos na música popular mundial.'},
+      {name:'Egberto Gismonti',type:'Piano / Violão / Compositor',desc:'Compositor e multi-instrumentista de Carmo do Rio Claro. Síntese de erudito, jazz e folclore nordestino. Técnica extendida de violão de 8 e 10 cordas.'},
+      {name:'Noel Rosa',type:'MPB / Sambista',desc:'O Filósofo do Samba. Compositor da Vila Isabel com harmonias sofisticadas, cromatismos e letras de sutil ironia intelectual.'},
+      {name:'Raphael Rabello',type:'Violão / Choro Moderno',desc:'O maior violonista de choro de sua geração. Técnica impecável, musicalidade refinada e capacidade de fundir choro e jazz com elegância.'},
+      {name:'Paulo Bellinati',type:'Violão / Arranjo',desc:'Arranjador e violonista de referência no Brasil. Seus arranjos para violão solo de obras de Ernesto Nazareth e Pixinguinha são modelos de polifonia jazzística.'},
+      {name:'Hermeto Pascoal',type:'Multi-instrum. / Compositor',desc:'O Bruxo do Brasil. Criatividade harmônica e rítmica sem precedentes. Compositor de uma linguagem única que funde jazz, folclore e vanguarda com espírito brasileiro.'},
+    ],
+    harmonia:{
+      acordes:[
+        {titulo:'Reharmonização — Substituições',level:'Intermediário',chords:[
+          {name:'DbMaj7',desc:'Subst. trítono de G7'},{name:'Ab7',desc:'Subst. trítono de D7'},
+          {name:'Eb7',desc:'Subst. trítono de A7'},{name:'Bb7',desc:'Subst. trítono de E7'},
+          {name:'E7alt',desc:'Dominante alterado'},{name:'G7#9',desc:'Dom. c/ 9ª aumentada'},
+          {name:'Cm7b5',desc:'Meio-dim. em menor'},{name:'F7b9b13',desc:'Dom. superlocrio'},
+        ]},
+        {titulo:'Drop-2 Voicings',level:'Arranjo Solo',chords:[
+          {name:'Gmaj7',desc:'Drop-2 — 4 vozes'},{name:'Em7',desc:'Drop-2 inversão'},
+          {name:'Am7',desc:'Voicing fechado'},{name:'D7',desc:'Drop-2 c/ tensão'},
+          {name:'Cmaj9',desc:'5 vozes — spread'},{name:'Bm7b5',desc:'Drop-2 menor'},
+          {name:'E7alt',desc:'Drop-2 alterado'},{name:'Am',desc:'Drop-2 básico menor'},
+        ]},
+        {titulo:'Escalas Especiais — Aplicação',level:'Modal Avançado',chords:[
+          {name:'Dim-Dom',desc:'sobre Dom.7'},{name:'T. Inteiros',desc:'sobre Dom. aumentado'},
+          {name:'Lídio Dom.',desc:'F# sobre G7#11'},{name:'Superlocria',desc:'sobre Dom. alterado'},
+          {name:'Mel. Minor',desc:'sobre tônica menor'},{name:'Frigia Maior',desc:'sobre V/iv'},
+          {name:'Lídio',desc:'sobre IVMaj7'},{name:'Dórica b2',desc:'sobre Im — noir'},
+        ]},
+      ],
+      progressoes:[
+        {label:'Reharmonização por Trítono',formula:'Dm7 → Db7 → Cmaj7',desc:'Substituição do G7 pelo Db7 (trítono de distância). Cria movimento cromático suave no baixo.'},
+        {label:'Cadência Andaluza — Choro',formula:'Am → G → F → E7',desc:'Base do flamenco e do choro brasileiro. Descida cromática da tônica para o dominante. Pixinguinha e Ernesto Nazareth.'},
+        {label:'Progressão Coltrane Changes',formula:'Cmaj7 → Abmaj7 → Emaj7 → Cmaj7',desc:'Progressão por terças maiores divindo a oitava em 3 partes iguais. Jazz moderno de alta complexidade.'},
+        {label:'Turnaround Jazzístico',formula:'Cmaj7 → A7 → Dm7 → G7',desc:'Retorno clássico de jazz. O I voltando ao II através de dominante secundário. Presente em centenas de standards.'},
+      ]
+    },
+    sobre:{
+      title:'Violão Popular Jazz — Nível Intermediário',
+      text:[
+        'O nível intermediário aprofunda o vocabulário jazzístico e reforça a identidade brasileira do músico. A reharmonização, o arranjo solo e a improvisação sobre escalas avançadas formam o núcleo desta etapa.',
+        'Pixinguinha, Raphael Rabello, Egberto Gismonti e Paulo Bellinati assumem papel central — representando a mais sofisticada tradição do violão e da composição popular brasileira.',
+        'O aluno desenvolve capacidade de arranjar standards americanos e obras brasileiras para violão solo, criar composições originais na forma A-A-B-A e improvisar com fluência sobre progressões complexas.',
+      ],
+      highlight:'"A fusão entre o choro moderno de Rabello e a linguagem bebop de Parker revela que o Brasil sempre teve o seu próprio jazz — complexo, rítmico e profundamente humano."',
+      features:[
+        {icon:'🎷',title:'Linguagem Bebop Brasileira',desc:'Padrões bebop aplicados sobre levadas brasileiras. Bird meets Pixinguinha: o encontro mais fértil da música popular.'},
+        {icon:'🎼',title:'Arranjo Solo Avançado',desc:'Drop-2 voicings, polifonia jazzística e ostinato de baixo. Melodia, baixo e harmonia simultâneos no mesmo instrumento.'},
+        {icon:'🔬',title:'Escalas e Modos Avançados',desc:'Diminuta, tons inteiros, lídio-dominante e superlocria aplicados de forma musical e expressiva.'},
+        {icon:'🖊️',title:'Composição e Autoria',desc:'Forma A-A-B-A, desenvolvimento motívico e harmonia funcional avançada para criar obras originais.'},
+        {icon:'🇧🇷',title:'Choro Moderno',desc:'A tradição renovada de Raphael Rabello, Paulo Bellinati e Egberto Gismonti como horizonte artístico.'},
+      ]
+    }
+  },
+
+  // ============================================================
+  // AVANÇADO
+  // ============================================================
+  adv:{
+    label:'Avançado', months:'12 Meses', icon:'🏆', emoji:'🏆',
+    heroStat:'100+ Obras',
+    phases:[
+      {
+        num:'01', title:'Técnica Extendida & Contraponto',
+        sub:'Percussão no corpo · Harmônicos · Scordatura · Fuga simples',
+        period:'Meses 1–3',
+        tags:['Técnica Extendida','Contraponto','Villa-Lobos 🇧🇷'],
+        exercicios:[
+          {name:'Harmônicos naturais e artificiais — série completa',author:'Téc. Extendida'},
+          {name:'Percussão no corpo do violão — palco solo',author:'🇧🇷 Gismonti / Bellinati',br:true},
+          {name:'Scordatura: afinação alternativa',author:'Téc. Clássica'},
+          {name:'Contraponto em 2 vozes — espécie 1ª a 4ª',author:'J. J. Fux'},
+          {name:'Fuga simples a 2 vozes no violão',author:'Contraponto'},
+        ],
+        estudos:[
+          {name:'12 Estudos para Violão',author:'🇧🇷 Heitor Villa-Lobos',br:true},
+          {name:'A Arte da Fuga — adaptação',author:'J. S. Bach'},
+          {name:'Contrapunto — Schoenberg',author:'Arnold Schoenberg'},
+          {name:'Préludes — Obra Completa',author:'🇧🇷 Paulo Bellinati',br:true},
+        ],
+        obras:[
+          {name:'Estudo nº 7',author:'🇧🇷 Villa-Lobos',br:true},
+          {name:'Chaconne em Ré menor — adaptação',author:'J. S. Bach'},
+          {name:'Ondas (Lembrança do Sertão)',author:'🇧🇷 Egberto Gismonti',br:true},
+          {name:'A Dança dos Caçadores',author:'🇧🇷 Paulo Bellinati',br:true},
+          {name:'Segóvia',author:'🇧🇷 Villa-Lobos',br:true},
+        ]
+      },
+      {
+        num:'02', title:'Composição Avançada & Identidade Autoral',
+        sub:'Suite original · Forma sonata · Harmonia pós-tonal',
+        period:'Meses 4–6',
+        tags:['Composição','Suite','Identidade 🇧🇷'],
+        exercicios:[
+          {name:'Suite em 3 movimentos — violão solo',author:'Forma'},
+          {name:'Harmonia pós-tonal: politonalidade',author:'Composição Séc.XX'},
+          {name:'Microtonalismo básico — quartos de tom',author:'Vanguarda'},
+          {name:'Leitmotiv e desenvolvimento temático',author:'Composição'},
+          {name:'Arranjo para duo violão e voz',author:'🇧🇷 MPB Câmara',br:true},
+        ],
+        estudos:[
+          {name:'Harmonia de Babbitt — Tonal e Atonal',author:'M. Babbitt'},
+          {name:'Cantos e Danças da Saudade',author:'🇧🇷 Garoto',br:true},
+          {name:'O Álbum de Aymoré',author:'🇧🇷 Egberto Gismonti',br:true},
+          {name:'Creative Musician in the Classroom',author:'Berklee'},
+        ],
+        obras:[
+          {name:'Lamento (Garoto) — arranjo avançado',author:'🇧🇷 Garoto',br:true},
+          {name:'Lorota — Estudo de Estilo',author:'🇧🇷 Garoto',br:true},
+          {name:'Piece en Forme de Habanera',author:'Maurice Ravel'},
+          {name:'Ondas — versão estendida',author:'🇧🇷 Egberto Gismonti',br:true},
+          {name:'Asas de um Anjo',author:'🇧🇷 Villa-Lobos',br:true},
+        ]
+      },
+      {
+        num:'03', title:'Orquestração & Música de Câmara',
+        sub:'Duo · Trio · Ensemble · Condução · Regência básica',
+        period:'Meses 7–9',
+        tags:['Câmara','Ensemble','Samba Jazzístico 🇧🇷'],
+        exercicios:[
+          {name:'Regência básica de ensemble de câmara',author:'Regência'},
+          {name:'Escrita para duo violão + sopro',author:'Orquestração'},
+          {name:'Transcrição orquestral para violão solo',author:'Arranjo Orq.'},
+          {name:'Ensemble jazz: violão + baixo + percussão',author:'🇧🇷 Samba-Jazz Adv.',br:true},
+          {name:'Improvisação coletiva — free jazz controlado',author:'Free Jazz'},
+        ],
+        estudos:[
+          {name:'Orchestration — Rimsky-Korsakov',author:'N. Rimsky-Korsakov'},
+          {name:'Obra Completa de Garoto',author:'🇧🇷 Garoto',br:true},
+          {name:'Samba Jazzístico',author:'🇧🇷 Dom Um Romão',br:true},
+          {name:'Jazz Arranging — Berklee',author:'Dick Grove'},
+        ],
+        obras:[
+          {name:'Praça Onze',author:'🇧🇷 Herivelto Martins',br:true},
+          {name:'São Paulo Quatrocentão',author:'🇧🇷 Garoto',br:true},
+          {name:'Concierto de Aranjuez — excertos',author:'Joaquín Rodrigo'},
+          {name:'Café com Leite',author:'🇧🇷 Jacob do Bandolim',br:true},
+          {name:'All the Things You Are — harmonia extendida',author:'Jerome Kern'},
+        ]
+      },
+      {
+        num:'04', title:'Recital de Conclusão & Identidade Artística',
+        sub:'Programa de recital · Obra original · Apresentação pública formal',
+        period:'Meses 10–12',
+        tags:['Recital','Obra Autoral','Legado 🇧🇷'],
+        exercicios:[
+          {name:'Montagem de programa de recital de 45 min.',author:'Performance'},
+          {name:'Obra autoral: peça de 5 a 10 min.',author:'Composição Final'},
+          {name:'Nota de programa: texto analítico',author:'Musicologia'},
+          {name:'Ensaio de interpretação com gravação',author:'Análise'},
+          {name:'Palestra-performance: contexto das obras',author:'🇧🇷 Tradição Oral BR',br:true},
+        ],
+        estudos:[
+          {name:'Prelúdios de Villa-Lobos — análise completa',author:'🇧🇷 Villa-Lobos',br:true},
+          {name:'The Music of Wayne Shorter',author:'Ana Maria Riveria'},
+          {name:'A Síntese do Violão Brasileiro',author:'🇧🇷 Henrique Cazes',br:true},
+          {name:'Violão e Identidade Nacional',author:'🇧🇷 Paulo Castagna',br:true},
+        ],
+        obras:[
+          {name:'5 Prelúdios — seleção',author:'🇧🇷 Villa-Lobos',br:true},
+          {name:'Dança Característica',author:'🇧🇷 Garoto',br:true},
+          {name:'Nana — Canção do Berço Brasileiro',author:'🇧🇷 Heitor Villa-Lobos',br:true},
+          {name:'A Night in Tunisia — versão autoral',author:'Dizzy Gillespie'},
+          {name:'Obra autoral de conclusão',author:'🇧🇷 Aluno / Instituto',br:true},
+        ]
+      }
+    ],
+    repertorio:[
+      {
+        label:'Fase 1',
+        pieces:[
+          {title:'Estudo nº 7 de Villa-Lobos',author:'🇧🇷 Heitor Villa-Lobos',br:true,desc:'Um dos mais complexos estudos do ciclo. Harmônicos, polifonia e técnica extendida em alta densidade. Referência máxima.',style:'Erudito BR'},
+          {title:'Chaconne em Ré menor (excerto)',author:'J. S. Bach (arr. violão)',br:false,desc:'Obra cume da literatura de violão erudito. Contraponto, variações e profundidade espiritual incomparável.',style:'Barroco/Erudito'},
+          {title:'Ondas (Lembrança do Sertão)',author:'🇧🇷 Egberto Gismonti',br:true,desc:'Peça que funde técnica extendida, nordeste e impressionismo. Gismonti como símbolo da vanguarda brasileira.',style:'MPB Vanguarda'},
+          {title:'A Dança dos Caçadores',author:'🇧🇷 Paulo Bellinati',br:true,desc:'Bellinati em plena maturidade. Percussão corporal, microrritmia e elementos afro-brasileiros em arranjo virtuosístico.',style:'Violão Solo BR'},
+          {title:'Segóvia',author:'🇧🇷 Villa-Lobos',br:true,desc:'Homenagem de Villa-Lobos ao grande Andrés Segóvia. Peça de concerto com dificuldade técnica alta e caráter nobre.',style:'Erudito BR'},
+        ]
+      },
+      {
+        label:'Fase 2',
+        pieces:[
+          {title:'Lamento (Garoto)',author:'🇧🇷 Garoto',br:true,desc:'Garoto, o maior violonista-compositor do Brasil antes de Villa-Lobos. Harmonia modal, cromáticas e saudade carioca.',style:'Choro/Jazz BR'},
+          {title:'Lorota',author:'🇧🇷 Garoto',br:true,desc:'Choro-jazz de alta sofisticação. A fusão entre choro e jazz americano des décadas de 1940 como vanguarda.',style:'Choro/Jazz BR'},
+          {title:'Asas de um Anjo',author:'🇧🇷 Villa-Lobos',br:true,desc:'Peça de câmara de Villa-Lobos para violão. Textura etérea, harmonia impressionista e profundidade estética singular.',style:'Erudito BR'},
+          {title:'Piece en Forme de Habanera',author:'Maurice Ravel (arr.)',br:false,desc:'Ravel e o impressionismo francês. Adaptação para violão solo. Estudo de timbre e dinâmica refinada.',style:'Impressionismo'},
+          {title:'Ondas — versão estendida',author:'🇧🇷 Egberto Gismonti',br:true,desc:'Versão longa e completa de Ondas. Desenvolvimento temático, modulações e técnica extendida em conjunto.',style:'MPB Vanguarda'},
+        ]
+      },
+      {
+        label:'Fase 3',
+        pieces:[
+          {title:'São Paulo Quatrocentão',author:'🇧🇷 Garoto',br:true,desc:'Grande obra de câmara de Garoto. Orquestral e polifônica. Ensemble violão + sopros e percussão.',style:'Orquestral BR'},
+          {title:'Café com Leite',author:'🇧🇷 Jacob do Bandolim',br:true,desc:'Choro virtuosístico de Jacob. Arranjo para ensemble. A tradição do choro em diálogo com o jazz de câmara.',style:'Choro Orquestral'},
+          {title:'Concierto de Aranjuez (excertos)',author:'Joaquín Rodrigo',br:false,desc:'O concerto mais famoso do repertório de violão. Trabalho com orquestra e ensemble. Técnica solística máxima.',style:'Concerto'},
+          {title:'All the Things You Are (arr. avançado)',author:'Jerome Kern',br:false,desc:'Standard com reharmonização total, improvisação livre e arranjo de câmara. Estudo de harmonia estendida avançada.',style:'Jazz Standard Adv.'},
+          {title:'Praça Onze',author:'🇧🇷 Herivelto Martins',br:true,desc:'Samba clássico em arranjo jazzístico de câmara. O samba encontra o jazz em formato ensemble.',style:'Samba-Jazz Câmara'},
+        ]
+      },
+      {
+        label:'Fase 4',
+        pieces:[
+          {title:'5 Prelúdios de Villa-Lobos (seleção)',author:'🇧🇷 Heitor Villa-Lobos',br:true,desc:'Os Prelúdios como programa de recital. Saudade, heroísmo, folklore e espiritualidade — o Brasil inteiro em 5 peças.',style:'Erudito BR'},
+          {title:'Dança Característica',author:'🇧🇷 Garoto',br:true,desc:'Peça de concerto de Garoto para fechar o ciclo. Virtuosismo técnico, identidade carioca e sofisticação atemporal.',style:'Choro/Jazz BR'},
+          {title:'Nana — Canção do Berço Brasileiro',author:'🇧🇷 Villa-Lobos',br:true,desc:'Peça de elevada poesia e espiritualidade. Encerra o recital com grandiosidade e profundidade emocional singular.',style:'Erudito BR'},
+          {title:'A Night in Tunisia (arr. autoral)',author:'Dizzy Gillespie',br:false,desc:'Standard jazz com arranjo autoral do aluno. Síntese do percurso — técnica, harmonia e identidade própria.',style:'Bebop/Autoral'},
+          {title:'Obra autoral de conclusão',author:'🇧🇷 Aluno / Instituto Urbano Rocha',br:true,desc:'A grande obra do recital de conclusão. Composição original do aluno refletindo toda a jornada — a voz artística que nasceu.',style:'Composição Autoral'},
+        ]
+      }
+    ],
+    tecnicas:[
+      {icon:'🌊',name:'Técnica Extendida',desc:'Harmônicos naturais e artificiais, percussão corporal, scordatura, técnicas de preparação do violão. Vanguarda brasileira.',pct:85,fases:'Fase 1–2'},
+      {icon:'🎼',name:'Contraponto & Fuga',desc:'Espécies de contraponto de 1ª a 4ª. Fuga a 2 e 3 vozes adaptada para violão solo. Polifonia jazzística densa.',pct:80,fases:'Fase 1–3'},
+      {icon:'🖊️',name:'Composição de Suite',desc:'Suite em múltiplos movimentos. Harmonia pós-tonal, politonalidade e microtonalismo. Obra com identidade autoral.',pct:88,fases:'Fase 2–3'},
+      {icon:'🎷',name:'Improvisação Livre',desc:'Free jazz controlado, improvisação coletiva, atonalismo expressivo. Diálogo criativo com ensemble.',pct:78,fases:'Fase 3'},
+      {icon:'🎻',name:'Regência & Câmara',desc:'Condução de ensemble câmara. Escrita para formações mistas: violão + sopro + percussão + voz.',pct:82,fases:'Fase 3–4'},
+      {icon:'🏆',name:'Performance Artística',desc:'Montagem de recital de 45 minutos. Nota de programa, postura de concerto, interpretação analítica e palestra-performance.',pct:92,fases:'Fase 4'},
+    ],
+    autores:[
+      {name:'Garoto (Aníbal Augusto Sardinha)',type:'Violão / Choro / Jazz',desc:'O mais avançado harmonista do violão brasileiro. Sua fusão de choro e jazz americano na década de 1940 antecipou a Bossa Nova em 15 anos. Figura essencial e ainda pouco reconhecida.'},
+      {name:'Heitor Villa-Lobos',type:'Erudito / Violão / Orquestra',desc:'O maior nome da música clássica brasileira. Seus 12 Estudos e 5 Prelúdios são fundamentais do repertório de violão de concerto. Síntese definitiva do folclore brasileiro e do impressionismo europeu.'},
+      {name:'Egberto Gismonti',type:'Piano / Violão 10 Cordas / Compositor',desc:'Compositor de Carmo do Rio Claro que domina erudito, jazz e folclore nordestino com a mesma naturalidade. Seu violão de 10 cordas redefiniu os limites do instrumento popular.'},
+      {name:'Paulo Bellinati',type:'Violão / Arranjo / Compositor',desc:'O maior arranjador de violão clássico-popular brasileiro. Seus arranjos de Ernesto Nazareth, Pixinguinha e obras próprias são estudados como modelos de polifonia e identidade.'},
+      {name:'Jacob do Bandolim',type:'Choro / Bandolim / Compositor',desc:'O principal intérprete e compositor de choro do século XX. Suas obras são estudadas em conjunto — do violão 7 cordas ao ensemble completo de choro.'},
+      {name:'Dom Um Romão',type:'Bateria / Samba-Jazz / Compositor',desc:'O maior baterista do samba-jazz brasileiro. Suas composições para conjunto revelam como o samba pode ser jazz sem perder sua essência rítmica e melódica.'},
+    ],
+    harmonia:{
+      acordes:[
+        {titulo:'Harmonia Pós-Tonal & Politonal',level:'Composição Avançada',chords:[
+          {name:'Asus2#4',desc:'Acorde lídio suspenso'},{name:'C/Db',desc:'Biacorde politonal'},
+          {name:'E+maj7',desc:'Aumentado com 7ª maior'},{name:'Dbdim7',desc:'Diminuto — tensão max.'},
+          {name:'Em(maj7)',desc:'Menor com 7ª maior'},{name:'G7#5#9',desc:'Dom. alterado duplo'},
+          {name:'B°7/C',desc:'Dim. sobre pedal'},{name:'Fmaj7b5',desc:'Lídio com 7ª maior'},
+        ]},
+        {titulo:'Técnica Extendida — Efeitos',level:'Avançado',chords:[
+          {name:'Harm. VIII',desc:'Harmônico 8º traste'},{name:'Harm. XII',desc:'Harmônico 12º traste'},
+          {name:'Harm. Artif.',desc:'Harmônico artificial'},{name:'Pizz.',desc:'Pizzicato bartók'},
+          {name:'Col Legno',desc:'Percussão madeira'},{name:'Tambora',desc:'Percussão corpo'},
+          {name:'Rasgueado',desc:'Flamenco — 4 dedos'},{name:'Trêmolo',desc:'p-a-m-i — 160bpm'},
+        ]},
+        {titulo:'Fuga & Contraponto — Técnicas',level:'Contraponto',chords:[
+          {name:'Sujeito',desc:'Tema principal da fuga'},{name:'Resp.',desc:'Resposta tonal/real'},
+          {name:'Contra-suj.',desc:'Contra-sujeito fixo'},{name:'Stretta',desc:'Entradas acumuladas'},
+          {name:'Inversão',desc:'Sujeito invertido'},{name:'Diminuição',desc:'Valores menores'},
+          {name:'Aumentação',desc:'Valores maiores'},{name:'Retrogr.',desc:'Sujeito retrograde'},
+        ]},
+      ],
+      progressoes:[
+        {label:'Progressão Coltrane Changes',formula:'Cmaj7 → Abmaj7 → Emaj7 → Cmaj7',desc:'Divisão da oitava em terças maiores. John Coltrane em Giant Steps. Alta complexidade tonal e harmônica.'},
+        {label:'Cadência Quartal (Bill Evans)',formula:'Dm7sus4 → Gsus4 → Cmaj9sus4',desc:'Harmonia em quartas — sonoridade aberta e moderna. Bill Evans e a escola modal americana.'},
+        {label:'Acorde Napolitano Jazzístico',formula:'DbMaj7 → Cmaj7',desc:'Napolitano em Jazz: acorde do II grau abaixado resolvendo na tônica. Sonoridade cinematográfica e nostálgica.'},
+        {label:'Ciclo de Terças Menores (Simetria)',formula:'Am → Cm → Ebm → Gbm → Am',desc:'Progressão simétrica por terças menores. Divide a oitava em 4 partes. Atonalismo transitório em contexto tonal.'},
+      ]
+    },
+    sobre:{
+      title:'Violão Popular Jazz — Nível Avançado',
+      text:[
+        'O nível avançado representa o ápice da formação do Instituto Urbano Rocha. O aluno desenvolve uma identidade artística própria, síntese de toda a jornada: técnica extendida, contraponto, composição de suite, música de câmara e recital formal.',
+        'Garoto, Villa-Lobos, Egberto Gismonti, Paulo Bellinati e Jacob do Bandolim são as referências centrais — representando o Brasil que dialoga com o mundo em seus mais altos níveis de sofisticação musical.',
+        'O recital de conclusão é o marco final: um programa de 45 minutos com obras escolhidas e uma composição autoral inédita. O músico que sai deste curso é um artista completo — técnica, sensibilidade e identidade própria.',
+      ],
+      highlight:'"O violão brasileiro de concerto é um dos mais ricos do mundo. De Villa-Lobos a Garoto, de Bellinati a Gismonti — aprender essa tradição é aprender a falar uma das mais belas línguas musicais já criadas."',
+      features:[
+        {icon:'🌊',title:'Técnica Extendida Brasileira',desc:'Harmônicos, percussão corporal, scordatura e microtonalismo — a vanguarda do violão popular brasileiro.'},
+        {icon:'🎼',title:'Contraponto e Fuga',desc:'J. S. Bach encontra o choro e o jazz. Polifonia como linguagem viva e criativa.'},
+        {icon:'🖊️',title:'Composição de Obra Autoral',desc:'Suite em múltiplos movimentos, identidade autoral e obra de conclusão inédita para recital formal.'},
+        {icon:'🎻',title:'Música de Câmara',desc:'Ensemble, duo, trio e condução de pequenos conjuntos. O violão no centro de formações diversas.'},
+        {icon:'🏆',title:'Recital de Conclusão',desc:'Programa de 45 minutos com nota analítica, palestra-performance e apresentação pública formal.'},
+      ]
+    }
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let currentLevel = 'basic';
+let currentSection = 'inicio';
+let currentRepTab = 0;
+
+// ============================================================
+// AUTH
+// ============================================================
+const USERS = {'aluno':'jazz2025','inter':'jazz2025','avancado':'jazz2025','professor':'urbano2025','admin':'rocha2025'};
+function doLogin(){
+  const u=document.getElementById('user-input').value.trim().toLowerCase();
+  const p=document.getElementById('pass-input').value;
+  const err=document.getElementById('login-error');
+  if(USERS[u]&&USERS[u]===p){
+    err.style.display='none';
+    document.getElementById('user-name').textContent=u.charAt(0).toUpperCase()+u.slice(1);
+    // auto-select level
+    if(u==='inter') setLevel('inter');
+    else if(u==='avancado') setLevel('adv');
+    else setLevel('basic');
+    document.getElementById('login-screen').classList.add('hidden');
+    setTimeout(()=>{
+      document.getElementById('app').classList.add('visible');
+      document.getElementById('login-screen').style.display='none';
+    },800);
+  } else {
+    err.style.display='block';
+    document.getElementById('pass-input').value='';
+  }
+}
+function doLogout(){
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-screen').style.display='flex';
+  setTimeout(()=>{
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('user-input').value='';
+    document.getElementById('pass-input').value='';
+  },100);
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.getElementById('login-screen').style.display!=='none') doLogin();
+});
+
+// ============================================================
+// LEVEL SWITCHING
+// ============================================================
+function setLevel(lvl){
+  currentLevel=lvl;
+  // update level buttons
+  document.querySelectorAll('.lvl-btn').forEach(b=>b.classList.remove('active-basic','active-inter','active-adv'));
+  if(lvl==='basic'){document.getElementById('btn-basic').classList.add('active-basic');}
+  else if(lvl==='inter'){document.getElementById('btn-inter').classList.add('active-inter');}
+  else{document.getElementById('btn-adv').classList.add('active-adv');}
+  // update brand
+  const labels={basic:'Básico',inter:'Intermediário',adv:'Avançado'};
+  document.getElementById('brand-course-label').textContent='Violão Popular Jazz · '+labels[lvl];
+  // toggle heroes
+  document.getElementById('hero-basic').className='level-panel'+(lvl==='basic'?' active':'');
+  document.getElementById('hero-inter').className='level-panel'+(lvl==='inter'?' active':'');
+  document.getElementById('hero-adv').className='level-panel'+(lvl==='adv'?' active':'');
+  // toggle banners
+  document.getElementById('info-banner-basic').className='level-panel'+(lvl==='basic'?' active':'');
+  document.getElementById('info-banner-inter').className='level-panel'+(lvl==='inter'?' active':'');
+  document.getElementById('info-banner-adv').className='level-panel'+(lvl==='adv'?' active':'');
+  // re-render content
+  currentRepTab=0;
+  renderAll();
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showSection(id){
+  currentSection=id;
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>{
+    const oc=t.getAttribute('onclick')||'';
+    t.classList.toggle('active', oc.includes("'"+id+"'"));
+  });
+  if(id==='tecnicas') setTimeout(animateProgress,200);
+}
+
+// ============================================================
+// RENDER ALL
+// ============================================================
+function renderAll(){
+  renderOverviewCards();
+  renderFases();
+  renderRepertorio();
+  renderTecnicas();
+  renderHarmonia();
+  renderSobre();
+}
+
+// ============================================================
+// RENDER HELPERS
+// ============================================================
+function lvlColor(){
+  if(currentLevel==='basic') return 'var(--gold)';
+  if(currentLevel==='inter') return 'var(--silver-light)';
+  return 'var(--copper-light)';
+}
+function tagStyle(){
+  if(currentLevel==='basic') return 'background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);color:var(--gold)';
+  if(currentLevel==='inter') return 'background:rgba(158,170,184,.06);border:1px solid rgba(158,170,184,.15);color:var(--silver-light)';
+  return 'background:rgba(196,122,58,.07);border:1px solid rgba(196,122,58,.18);color:var(--copper-light)';
+}
+function progressStyle(){
+  if(currentLevel==='basic') return 'background:linear-gradient(90deg,var(--gold-dark),var(--gold))';
+  if(currentLevel==='inter') return 'background:linear-gradient(90deg,var(--silver-dark),var(--silver-light))';
+  return 'background:linear-gradient(90deg,var(--copper-dark),var(--copper-light))';
+}
+function repCardBeforeColor(){
+  if(currentLevel==='basic') return 'var(--gold)';
+  if(currentLevel==='inter') return 'var(--silver-light)';
+  return 'var(--copper-light)';
+}
+
+// ============================================================
+// OVERVIEW CARDS
+// ============================================================
+function renderOverviewCards(){
+  const d=DATA[currentLevel];
+  const lc=lvlColor();
+  let html=`<div class="section-header">
+    <div><div class="section-eyebrow" style="color:${lc}">Estrutura do Curso — ${d.label}</div>
+    <div class="section-title">Visão Geral das Fases</div></div>
+    <div class="section-meta">${d.phases.length} fases · ${d.months}</div></div>
+  <div class="phase-grid">`;
+  d.phases.forEach((p,i)=>{
+    html+=`<div class="phase-card" onclick="showSection('fases')" style="--pc:${lc}">
+      <div class="phase-header">
+        <div class="phase-num" style="background:rgba(0,0,0,.2);border:1px solid ${lc}33;color:${lc}">${p.num}</div>
+        <div class="phase-info"><h3>${p.title}</h3><p>${p.sub}</p></div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-tag-list">${p.tags.map(t=>`<span class="tag" style="${tagStyle()}">${t}</span>`).join('')}</div>
+        <ul class="content-list">
+          ${p.exercicios.slice(0,2).map(e=>`<li><span><strong>${e.name}</strong></span><span class="author-tag${e.br?' br':''}">${e.author}</span></li>`).join('')}
+          ${p.obras.slice(0,2).map(o=>`<li><span><strong>${o.name}</strong></span><span class="author-tag${o.br?' br':''}">${o.author}</span></li>`).join('')}
+        </ul>
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('overview-cards').innerHTML=html;
+}
+
+// ============================================================
+// FASES
+// ============================================================
+function renderFases(){
+  const d=DATA[currentLevel];
+  const lc=lvlColor();
+  document.getElementById('fases-eyebrow').textContent=`Conteúdo Programático — ${d.label}`;
+  document.getElementById('fases-eyebrow').style.color=lc;
+  let html='';
+  d.phases.forEach(p=>{
+    html+=`<div class="harmony-block" style="margin-bottom:28px;">
+      <div class="harmony-header">
+        <div>
+          <div class="harmony-title">Fase ${p.num} — ${p.title}</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">${p.sub}</div>
+        </div>
+        <div class="harmony-level" style="color:${lc}">${p.period}</div>
+      </div>
+      <div style="padding:22px 26px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:10px;letter-spacing:2px;color:${lc};text-transform:uppercase;margin-bottom:10px;">Exercícios Técnicos</div>
+            <ul class="content-list">
+              ${p.exercicios.map(e=>`<li><span><strong>${e.name}</strong></span><span class="author-tag${e.br?' br':''}">${e.author}</span></li>`).join('')}
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:10px;letter-spacing:2px;color:${lc};text-transform:uppercase;margin-bottom:10px;">Estudos de Referência</div>
+            <ul class="content-list">
+              ${p.estudos.map(e=>`<li><span><strong>${e.name}</strong></span><span class="author-tag${e.br?' br':''}">${e.author}</span></li>`).join('')}
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:10px;letter-spacing:2px;color:${lc};text-transform:uppercase;margin-bottom:10px;">Obras / Repertório</div>
+            <ul class="content-list">
+              ${p.obras.map(o=>`<li><span><strong>${o.name}</strong></span><span class="author-tag${o.br?' br':''}">${o.author}</span></li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('fases-content').innerHTML=html;
+}
+
+// ============================================================
+// REPERTÓRIO
+// ============================================================
+function renderRepertorio(){
+  const d=DATA[currentLevel];
+  const lc=lvlColor();
+  document.getElementById('rep-eyebrow').textContent=`Sugestão de Repertório — ${d.label}`;
+  document.getElementById('rep-eyebrow').style.color=lc;
+  // tabs
+  let tabsHTML='';
+  d.repertorio.forEach((r,i)=>{
+    tabsHTML+=`<button class="rep-tab${i===currentRepTab?' active':''}" style="${i===currentRepTab?'color:'+lc+';border-bottom-color:'+lc:''}" onclick="switchRepTab(${i})">${r.label}</button>`;
+  });
+  document.getElementById('rep-tabs').innerHTML=tabsHTML;
+  // content
+  renderRepPanel();
+}
+
+function switchRepTab(i){
+  currentRepTab=i;
+  renderRepertorio();
+}
+
+function renderRepPanel(){
+  const d=DATA[currentLevel];
+  const r=d.repertorio[currentRepTab];
+  const lc=lvlColor();
+  const bc=repCardBeforeColor();
+  let html='<div class="repertoire-grid">';
+  r.pieces.forEach(p=>{
+    html+=`<div class="rep-card${p.br?' brazil':''}" style="--rbc:${bc}">
+      <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:${p.br?'var(--green)':bc};opacity:${p.br?'.6':'.45'}"></div>
+      <div class="rep-title">${p.title}</div>
+      <div class="rep-author${p.br?' br':''}" style="${!p.br?'color:'+lc:''}">${p.author}</div>
+      <div class="rep-details">${p.desc}</div>
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+        <span class="tag" style="${tagStyle()};padding:2px 8px;font-size:8px;">${p.style}</span>
+        ${p.br?'<span class="br-badge">🇧🇷 Autor Brasileiro</span>':''}
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('rep-content').innerHTML=html;
+}
+
+// ============================================================
+// TÉCNICAS
+// ============================================================
+function renderTecnicas(){
+  const d=DATA[currentLevel];
+  const lc=lvlColor();
+  document.getElementById('tec-eyebrow').textContent=`Conteúdo Técnico — ${d.label}`;
+  document.getElementById('tec-eyebrow').style.color=lc;
+  document.getElementById('authors-eyebrow').style.color=lc;
+  // tech cards
+  let html='<div class="tech-grid">';
+  d.tecnicas.forEach(t=>{
+    html+=`<div class="tech-card">
+      <div class="tech-icon">${t.icon}</div>
+      <div class="tech-name">${t.name}</div>
+      <div class="tech-desc">${t.desc}</div>
+      <div class="progress-label"><span style="color:${lc}">${t.fases}</span><span>${t.pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="${progressStyle()};width:${t.pct}%"></div></div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('tec-content').innerHTML=html;
+  // authors
+  let ahtml='';
+  d.autores.forEach(a=>{
+    ahtml+=`<div class="author-card">
+      <div class="author-card-head">
+        <div class="author-card-name">${a.name}</div>
+        <div class="author-card-type" style="color:${lc}">${a.type}</div>
+      </div>
+      <div class="author-card-body">${a.desc}</div>
+    </div>`;
+  });
+  document.getElementById('authors-content').innerHTML=ahtml;
+}
+
+// ============================================================
+// HARMONIA
+// ============================================================
+function renderHarmonia(){
+  const d=DATA[currentLevel];
+  const lc=lvlColor();
+  document.getElementById('harm-eyebrow').textContent=`Teoria & Prática — ${d.label}`;
+  document.getElementById('harm-eyebrow').style.color=lc;
+  let html='';
+  // chord blocks
+  d.harmonia.acordes.forEach(bl=>{
+    html+=`<div class="harmony-block" style="margin-bottom:18px;">
+      <div class="harmony-header">
+        <div class="harmony-title">${bl.titulo}</div>
+        <div class="harmony-level" style="color:${lc}">${bl.level}</div>
+      </div>
+      <div class="harmony-body">
+        ${bl.chords.map(c=>`<div class="chord-item"><div class="chord-name" style="color:${lc}">${c.name}</div><div class="chord-desc">${c.desc}</div></div>`).join('')}
+      </div>
+    </div>`;
+  });
+  // progressões
+  html+=`<div class="harmony-block"><div class="harmony-header"><div class="harmony-title">Progressões Fundamentais</div><div class="harmony-level" style="color:${lc}">Cadências</div></div>
+  <div style="padding:20px 24px;"><div class="prog-grid">`;
+  d.harmonia.progressoes.forEach(pg=>{
+    html+=`<div class="prog-item">
+      <div class="prog-label" style="color:${lc}">${pg.label}</div>
+      <div class="prog-formula" style="color:var(--text)">${pg.formula}</div>
+      <div class="prog-desc">${pg.desc}</div>
+    </div>`;
+  });
+  html+='</div></div></div>';
+  document.getElementById('harm-content').innerHTML=html;
+}
+
+// ============================================================
+// SOBRE
+// ============================================================
+function renderSobre(){
+  const d=DATA[currentLevel];
+  const lc=lvlColor();
+  const labels={basic:'Básico',inter:'Intermediário',adv:'Avançado'};
+  const prereq={basic:'Aberto para iniciantes',inter:'Pré-requisito: conclusão do Nível Básico',adv:'Pré-requisito: conclusão do Nível Intermediário'};
+  // banner
+  document.getElementById('sobre-banner').innerHTML=`<div class="info-banner" style="background:${lc}0D;border-color:${lc}33;margin-bottom:44px;">
+    <div class="info-banner-text"><h3>${prereq[currentLevel]}</h3><p>Consulte o currículo completo do Instituto Urbano Rocha para valores, turmas e metodologia.</p></div>
+    <a href="https://urbajoe.github.io/curric_mus/" target="_blank" class="btn-info" style="background:${lc};color:var(--black)">Ver Currículo ↗</a>
+  </div>`;
+  // text
+  document.getElementById('sobre-text').innerHTML=`
+    <h2>${d.sobre.title}</h2>
+    ${d.sobre.text.map(t=>`<p>${t}</p>`).join('')}
+    <div class="about-highlight" style="border-color:${lc};background:${lc}0A">${d.sobre.highlight}</div>`;
+  // features
+  document.getElementById('sobre-features').innerHTML=d.sobre.features.map(f=>`
+    <div class="feature-item">
+      <div class="feature-icon">${f.icon}</div>
+      <div class="feature-text"><h4>${f.title}</h4><p>${f.desc}</p></div>
+    </div>`).join('');
+}
+
+// ============================================================
+// PROGRESS ANIMATION
+// ============================================================
+function animateProgress(){
+  document.querySelectorAll('.progress-fill').forEach(fill=>{
+    const w=fill.style.width;
+    fill.style.width='0%';
+    setTimeout(()=>{fill.style.width=w;},200);
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderAll();
+showSection('inicio');
+</script>
+</body>
+</html>
